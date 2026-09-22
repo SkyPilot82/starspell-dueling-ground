@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>starspell · the dueling ground, filled</title>
+<style>
+  :root{--ink:#e8e4ff;--dim:#8a94c4;--gold:#e8c76a;--bg:#0a0e1f;--card:#121732;--line:#232a52;
+        --good:#7de8a0;--warn:#ffb066;--bad:#ff9d88}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Georgia,'Times New Roman',serif;padding-bottom:96px}
+  @media(max-width:620px){body{padding-bottom:170px}}
+  .wrap{max-width:1040px;margin:0 auto;padding:28px 18px}
+  .crumb{font-size:11.5px;letter-spacing:.22em;color:var(--dim)}
+  h1{font-size:33px;color:var(--gold);letter-spacing:.06em;margin:.25em 0 .1em;text-shadow:0 0 22px rgba(232,199,106,.25)}
+  h2{color:var(--gold);letter-spacing:.05em;margin-top:2.6em;border-bottom:1px solid var(--line);padding-bottom:.35em;font-size:19px}
+  h3{color:var(--gold);letter-spacing:.05em;font-size:15.5px;margin:1.6em 0 .5em}
+  .sub{color:var(--dim);font-style:italic;margin-top:0;max-width:720px}
+  .note{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:14px 0;color:var(--dim);font-size:14px}
+  .note b{color:var(--ink)}
+  a{color:var(--gold)}
+
+  /* ---------- phones ---------- */
+  .stage{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-top:20px;justify-content:center}
+  .phonewrap{flex:0 0 auto;width:min(330px,100%)}
+  .phcap{font-size:11px;letter-spacing:.18em;color:var(--dim);text-align:center;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .phone{width:100%;aspect-ratio:39/76;border-radius:28px;border:1px solid #2a3160;position:relative;overflow:hidden;
+         background:#0a0d1c;box-shadow:0 18px 60px rgba(0,0,0,.55)}
+  .lay{position:absolute;inset:0}
+  .grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");opacity:.05;pointer-events:none}
+  .aur{position:absolute;width:66%;aspect-ratio:1;border-radius:50%;mix-blend-mode:screen;pointer-events:none}
+  .mockcap{position:absolute;left:10px;bottom:6px;font-size:8.5px;letter-spacing:.12em;color:#3f4870;pointer-events:none;z-index:5}
+
+  .ph-back{position:absolute;left:6%;top:2.6%;font-size:12px;color:#9fb0e8;letter-spacing:.06em}
+  .ph-chip{position:absolute;right:5%;top:2.2%;font-size:9.5px;color:#c9b676;background:#161d38;border:1px solid #3a4577;border-radius:99px;padding:3px 10px;letter-spacing:.06em}
+  .ph-word{position:absolute;left:0;right:0;top:6.2%;text-align:center;font-size:18px;letter-spacing:.22em;
+           background:linear-gradient(180deg,#fff7dc,#ffe08d 45%,#d7b45c 70%,#9c7a28);-webkit-background-clip:text;background-clip:text;color:transparent;
+           text-shadow:0 0 18px rgba(232,199,106,.3)}
+  .ph-word svg{vertical-align:-2px}
+  .ph-cap{position:absolute;left:0;right:0;top:10.6%;text-align:center;font-size:9px;font-style:italic;color:#c9b676;letter-spacing:.05em}
+  .ph-band{position:absolute;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.18em;color:#c9b676}
+  .ph-band .pips{display:inline-flex;gap:4px;margin-left:8px;vertical-align:1px}
+  .ph-band .pip{width:4.5px;height:4.5px;border-radius:50%}
+  .ph-strip{position:absolute;left:0;right:0;text-align:center;font-size:8.5px;font-style:italic;color:#8a94c4;letter-spacing:.1em}
+  .ph-note{position:absolute;left:8%;right:8%;text-align:center;font-size:9px;font-style:italic;color:#c9b676}
+  .ph-fic{position:absolute;left:10%;right:10%;text-align:center;font-size:10px;font-style:italic;color:#5a6390}
+
+  .voidbr{position:absolute;left:11%;right:11%;border:1.5px dashed rgba(255,157,136,.5);border-radius:12px;display:flex;align-items:center;justify-content:center;z-index:4}
+  .voidlab{color:var(--bad);font-size:9px;letter-spacing:.1em;background:rgba(10,13,28,.78);padding:2px 9px;border-radius:99px;text-align:center}
+
+  .plaq{position:absolute;left:8.5%;width:83%;height:6.25%;background:linear-gradient(180deg,#1a2142,#12172f);border:1px solid #3a4577;border-radius:9px;display:flex;align-items:center;padding:0 3.5%}
+  .plaq.move{border-color:rgba(255,215,122,.75);box-shadow:0 0 12px rgba(255,215,122,.28)}
+  .plaq.sum{border-color:rgba(255,215,122,.9);box-shadow:0 0 16px rgba(255,215,122,.4)}
+  .plaq .pl-g{flex:0 0 auto;margin-right:7px;opacity:.9}
+  .plaq .pl-t{flex:1;min-width:0}
+  .plaq .pl-n{font-size:10.5px;letter-spacing:.06em;color:#d8d2bd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .plaq.move .pl-n{color:#ffe9a8}
+  .plaq .pl-s{font-size:7.5px;font-style:italic;color:#8a94c4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .plaq.move .pl-s,.plaq.sum .pl-s{color:#ffd77a}
+  .plaq .pl-r{flex:0 0 auto;font-size:11px;color:#8a94c4;letter-spacing:.18em}
+  .plaq .pl-a{flex:0 0 auto;font-size:8.5px;letter-spacing:.1em;color:#241c40;background:linear-gradient(180deg,#ffe9a8,#d7b45c);border-radius:99px;padding:3px 9px}
+
+  /* the proposed replay row — the plaque's sibling */
+  .rrow{position:absolute;left:8.5%;width:83%;height:6.25%;background:linear-gradient(180deg,#1a2142,#12172f);border:1px solid #3a4577;border-radius:9px;display:flex;align-items:center;padding:0 3.5%}
+  .rrow .dot{flex:0 0 8px;height:8px;border-radius:50%;margin-right:8px}
+  .rrow .rt{flex:1;min-width:0}
+  .rrow .rn{font-size:11.5px;letter-spacing:.04em;color:#f0e8d2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rrow .rs{font-size:8.5px;font-style:italic;color:#8a94c4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rrow .rs .rr{color:#cfd8ff;font-style:normal}
+  .rpill{flex:0 0 auto;margin-left:6px;border-radius:99px;padding:4px 10px;font-size:9px;letter-spacing:.08em;white-space:nowrap}
+  .rpill.g{background:linear-gradient(180deg,#ffe9a8,#d7b45c);color:#241c40}
+  .rpill.d{background:#0d1228;border:1px solid #3a4577;color:#9fb0e8}
+  .rrow.ghost{opacity:.55}
+
+  .chips-row{position:absolute;left:5%;right:5%;display:flex;gap:2.5%;justify-content:center}
+  .vchip{flex:0 0 31%;background:#141a33;border:1px solid #3a4577;border-radius:99px;display:flex;align-items:center;padding:4px 7px;min-width:0}
+  .vchip .dot{flex:0 0 6px;height:6px;border-radius:50%;margin-right:5px}
+  .vchip .cn{flex:1;min-width:0}
+  .vchip .nm{font-size:8px;color:#f0e8d2;letter-spacing:.03em;white-space:nowrap;overflow:hidden}
+  .vchip .sb{font-size:6.5px;font-style:italic;color:#5a6390;white-space:nowrap;overflow:hidden}
+  .vchip .tag{flex:0 0 auto;margin-left:4px;border-radius:99px;padding:2px 4px;letter-spacing:.04em}
+  .vchip .tag.g{background:linear-gradient(180deg,#ffe9a8,#d7b45c);color:#241c40}
+  .vchip .tag.d{background:#0d1228;border:1px solid #3a4577;color:#8a94c4}
+  .vchip.all{flex:0 0 auto;justify-content:center;color:#9fb0e8;font-size:8px;letter-spacing:.1em;padding:4px 10px}
+  .vchip.notag .nm{font-size:9.5px}
+
+  .door{position:absolute;left:9%;width:82%;height:7.4%;border-radius:12px;border:1.5px solid #c9a94f;background:linear-gradient(180deg,#1c2344,#131834);box-shadow:inset 0 0 18px rgba(20,26,58,.8),0 2px 10px rgba(0,0,0,.4);text-align:center;display:flex;flex-direction:column;justify-content:center}
+  .door .dl{font-size:12.5px;letter-spacing:.14em;color:#f4e6bd}
+  .door .ds{font-size:7.5px;font-style:italic;color:#c9b48a;margin-top:2px}
+  .door.dark{border-color:#3a4577;height:7%}
+  .door.dark .dl{font-size:10.5px;color:#c9d0f0}
+  .door.dark .ds{color:#5a6390}
+
+  .statetabs{display:flex;gap:6px;margin:14px auto 0;max-width:700px}
+  .stab{flex:1;min-width:0;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 2px 7px;text-align:center}
+  .stab .r{font-size:10.5px;letter-spacing:.06em;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stab.on{border-color:var(--gold);box-shadow:0 0 12px rgba(232,199,106,.22)}
+  .stab.on .r{color:var(--gold)}
+  .statecopy{color:var(--dim);font-size:13.5px;max-width:760px;margin:14px auto 0}
+  .statecopy b{color:var(--ink)}
+  .swipehint{display:none;color:#b8a86e;font-size:12.5px;font-style:italic;margin:-2px 0 6px;text-align:center}
+  @media(max-width:740px){.swipehint{display:block}.stage{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scroll-snap-type:x mandatory;padding-bottom:8px}
+    .phonewrap{flex:0 0 78%;scroll-snap-align:center}}
+
+  /* ---------- anatomy ---------- */
+  .anat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+  .bigrow{position:relative;max-width:640px;margin:12px auto;background:linear-gradient(180deg,#1a2142,#12172f);border:1.5px solid #3a4577;border-radius:14px;height:92px;display:flex;align-items:center;padding:0 26px}
+  .bigrow .dot{flex:0 0 15px;height:15px;border-radius:50%;background:#ffd77a;box-shadow:0 0 12px rgba(255,215,122,.8);margin-right:16px}
+  .bigrow .bt{flex:1;min-width:0}
+  .bigrow .bn{font-size:21px;color:#f0e8d2;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bigrow .bs{font-size:14.5px;font-style:italic;color:#8a94c4}
+  .bigrow .bs .rr{color:#cfd8ff;font-style:normal}
+  .bigrow .bp{flex:0 0 auto;margin-left:14px;background:linear-gradient(180deg,#ffe9a8,#d7b45c);color:#241c40;border-radius:99px;padding:9px 20px;font-size:15px;letter-spacing:.1em}
+  .callout{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;font-size:12px;color:var(--dim);margin-top:12px}
+  .callout b{color:var(--ink)}
+  .pillrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:14px 0 4px}
+  .lp{background:linear-gradient(180deg,#ffe9a8,#d7b45c);color:#241c40;border-radius:99px;padding:7px 0;font-size:13px;letter-spacing:.1em;text-align:center}
+  .lpl{font-size:10px;color:var(--dim);text-align:center;margin-top:4px;letter-spacing:.06em}
+  .floorbox{display:flex;gap:26px;flex-wrap:wrap;align-items:center;justify-content:center;background:#0d1228;border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px}
+  .lawlist{margin:10px 0 0;padding-left:1.2em}
+  .lawlist li{margin:9px 0;color:var(--dim);font-size:13.5px}
+  .lawlist li b{color:var(--ink)}
+
+  table.sweep{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+  table.sweep th{color:var(--gold);font-size:11px;letter-spacing:.14em;text-align:left;border-bottom:1px solid var(--line);padding:6px 8px}
+  table.sweep td{color:var(--dim);border-bottom:1px solid #1a2142;padding:7px 8px;vertical-align:top}
+  table.sweep td b{color:var(--ink)}
+  table.sweep td code{color:#9fb0e8;font-size:12px}
+  .tblwrap{overflow-x:auto}
+  .sz{display:inline-block;border-radius:99px;padding:1px 10px;font-size:11px;letter-spacing:.1em;border:1px solid var(--line)}
+  .sz.S{color:var(--good);border-color:rgba(125,232,160,.4)}
+  .sz.M{color:var(--warn);border-color:rgba(255,176,102,.4)}
+  .sz.L{color:var(--bad);border-color:rgba(255,157,136,.4)}
+
+  /* sheet mocks */
+  .sheetrow{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+  .sheet{width:min(320px,100%);background:#10142c;border:1.5px solid #3a4577;border-radius:16px;position:relative;overflow:hidden}
+  .sheet .sh-h{position:absolute;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.16em;color:#c9b676}
+  .sheet .sh-x{position:absolute;right:7%;font-size:11px;color:#8a94c4}
+  .sheet .sh-plus{position:absolute;font-size:11px;color:#9fb0e8;border:1px solid #3a4577;border-radius:7px;padding:0 6px}
+  .srow{position:absolute;left:5%;width:90%;display:flex;align-items:center}
+  .srow .dot{flex:0 0 7px;height:7px;border-radius:50%;margin-right:7px}
+  .srow .st{flex:1;min-width:0}
+  .srow .sn{font-size:10px;color:#f0e8d2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .srow .ss{font-size:7px;font-style:italic;color:#5a6390;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .srow .sbtn{flex:0 0 auto;margin-left:6px;border-radius:99px;text-align:center;letter-spacing:.06em}
+  .srow .sbtn.g{background:linear-gradient(180deg,#ffe9a8,#d7b45c);color:#241c40}
+  .srow .sbtn.d{background:#0d1228;border:1px solid #3a4577;color:#9fb0e8}
+  .srow .sx{flex:0 0 auto;margin-left:6px;color:#39406b;font-size:10px}
+  .sheet .sh-inv{position:absolute;left:7%;width:86%;border:1.5px solid #c9a94f;border-radius:11px;background:linear-gradient(180deg,#1c2344,#131834);text-align:center;display:flex;flex-direction:column;justify-content:center}
+  .sheet .sh-inv .a{font-size:10.5px;letter-spacing:.1em;color:#f4e6bd}
+  .sheet .sh-inv .b{font-size:7px;font-style:italic;color:#c9b48a}
+
+  /* ---------- verdicts ---------- */
+  .q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:14px 0}
+  .q .qt{color:var(--ink);font-size:15px;letter-spacing:.06em}
+  .q .qt b{color:var(--gold)}
+  .q .qd{color:var(--dim);font-size:13.5px;margin:6px 0 10px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{cursor:pointer;border:1px solid var(--line);background:#0d1228;color:var(--dim);border-radius:99px;padding:5px 14px;font:12.5px Georgia,serif;letter-spacing:.06em}
+  .chip.on{border-color:var(--gold);color:var(--gold);box-shadow:0 0 10px rgba(232,199,106,.25)}
+  .qnote{width:100%;margin-top:10px;background:#0d1228;border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:7px 10px;font:14px Georgia,serif}
+  .prov{margin-top:44px;color:#5b6494;font-size:12px;font-style:italic;border-top:1px solid var(--line);padding-top:14px}
+  .bar{position:fixed;bottom:0;left:0;right:0;background:#0d1228ee;border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:12px;align-items:center;backdrop-filter:blur(6px);flex-wrap:wrap;z-index:9}
+  .bar .cnt{font-size:13px;color:var(--ink);white-space:nowrap}
+  .bar .cnt b{color:var(--gold)}
+  .copy{cursor:pointer;border:1px solid var(--gold);background:var(--gold);color:#0a0e1f;border-radius:99px;padding:7px 18px;font:13px Georgia,serif;letter-spacing:.1em}
+  .copied{color:#7de8a0;font-size:12.5px;min-width:70px}
+  .barnote{flex:1 1 160px;color:#5b6494;font-size:11.5px;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb">STARSPELL · DESIGN REVIEW · 2026-09-22 · ROUND TWO ON THE VERSUS PAGE</div>
+  <h1>THE DUELING GROUND, FILLED</h1>
+  <p class="sub">The 9/9 <a href="https://skypilot82.github.io/starspell-under-one-sky/">UNDER ONE SKY</a> round built
+  this page its world; this round makes the middle <b style="color:var(--ink)">earn its ground</b>. One move does most
+  of it: the mages you can replay stop being 118-unit pills and become <b style="color:var(--ink)">full replay rows</b>
+  — the seal-plaques&rsquo; own furniture — and the page fills itself with them by law, in every state, on every
+  height of phone. Names breathe, AGAIN never shrinks again, and the dead middle dies by construction.</p>
+
+  <div class="note"><b>Skylar&rsquo;s ask, verbatim (9/22, voice):</b> <i>&ldquo;For the versus screen before you go
+  into a battle, we need to do a redesign on that, you can put the redesign in a sky pilot GitHub page. Right now
+  there&rsquo;s too much dead space in the middle of the screen. The mages you can replay are way too small. Their
+  names are being cut off. The Again button is being cut off as well. We need to fill that space up and make it look
+  better. Right now it&rsquo;s just too much dead space in the middle of the screen.&rdquo;</i><br><br>
+  <b>How to rule:</b> tap the state tabs to walk every state before/after, then answer the four numbered questions at
+  the foot — chips + notes, COPY VERDICTS in the bottom bar, paste back to the console. <b>Nothing here is built.</b></div>
+
+  <h2>I · THE COMPLAINT, MEASURED</h2>
+  <div class="note">Measured against <b>versus.js at v0.103.0 HEAD</b> (the layout is byte-identical to the v0.102.0
+  stack — the only versus.js change since is the App Store URL). Design box 420×800; <code>safeB</code> is the
+  computed true foot, ~800 on a box-exact phone and <b>~830–855 on tall phones</b>, where the doors sink with the
+  foot but the middle band does not follow — the void grows with the screen.</div>
+  <div class="tblwrap"><table class="sweep">
+    <tr><th>STATE (TODAY)</th><th>THE MIDDLE ENDS AT</th><th>THE FIRST DOOR STARTS AT</th><th>DEAD NIGHT</th></tr>
+    <tr><td><b>zero duels</b> (the common evening: you finished your games)</td><td>~y360 — the pill strip</td><td>y612</td><td><b>≈252–300 pts, ~a third of the screen</b></td></tr>
+    <tr><td><b>1 plaque</b></td><td>~y420</td><td>y612</td><td>≈192 pts</td></tr>
+    <tr><td><b>2 plaques</b></td><td>~y478</td><td>y612</td><td>≈134 pts</td></tr>
+    <tr><td><b>3 plaques</b></td><td>~y536</td><td>y612</td><td>≈76 pts</td></tr>
+    <tr><td><b>4 plaques (fold)</b></td><td>~y580</td><td>y612</td><td>fine — the busy page was never the problem</td></tr>
+    <tr><td><b>offline</b></td><td>~y523 — the retry door</td><td>— (no doors)</td><td>≈230 pts above the foot note</td></tr>
+  </table></div>
+  <div class="tblwrap"><table class="sweep">
+    <tr><th>REPLAY SURFACE (TODAY)</th><th>NAME GETS</th><th>THE AFFORDANCE</th></tr>
+    <tr><td><b>presence strip pill</b> · on the page (versus.js buildStrip)</td><td><b>44 units at 9 pt</b> — &ldquo;Moonlit Hare&rdquo; renders &ldquo;Moonlit H…&rdquo;</td><td>AGAIN tag <b>48×20</b>, font shrinks 7.5 → <b>5.5 pt floor, then clips</b> — es &ldquo;OTRA VEZ&rdquo; and de &ldquo;NOCHMAL&rdquo; live at the floor</td></tr>
+    <tr><td><b>social sheet RECENT row</b> (openSocial)</td><td>118 units at 12 pt</td><td>AGAIN button 76×24, font shrinks 9.5 → 7 pt floor</td></tr>
+  </table></div>
+  <div class="note">Both of Skylar&rsquo;s sentences are one defect: <b>the people worth re-fighting were given the
+  smallest furniture on the page</b>, while the ground that could seat them full-size sits empty right above the
+  doors. The fix is the same move in both directions — promote the people into the space.</div>
+
+  <h2>II · THE FILLED GROUND — EVERY STATE, BEFORE AND AFTER</h2>
+  <div class="statetabs" id="statetabs"></div>
+  <p class="swipehint">← swipe — TODAY left, PROPOSED right →</p>
+  <div class="stage">
+    <div class="phonewrap"><div class="phcap">TODAY — LIVE v0.103.0</div><div class="phone" id="phoneB"></div></div>
+    <div class="phonewrap"><div class="phcap">PROPOSED — FILLED</div><div class="phone" id="phoneA"></div></div>
+  </div>
+  <div class="statecopy" id="statecopy"></div>
+
+  <div class="note" style="margin-top:20px"><b>The fill law, once</b> (what the build implements):
+  <ul class="lawlist">
+    <li><b>Plaques first.</b> Standing duels keep the band head, the five cap pips and the shipped fold (&gt;4 → 3 +
+    &ldquo;+%1 more&rdquo;). Nothing about the duel ledger moves.</li>
+    <li><b>Replay rows fill the rest.</b> Beneath the plaques (or alone at zero duels, under the shipped
+    &ldquo;under this sky tonight&rdquo; head), full 344×50 rows drawn from the strip&rsquo;s own ranked picks —
+    friends online → recent rivals → mages of the circle — <b>as many as the ground grants</b>: rows keep coming while
+    the next row&rsquo;s bottom stays ≥24 pts above the doors&rsquo; top edge (safeB−188). Max five. On a box-exact
+    phone that is 4 rows at zero duels, 1 at three plaques; a tall phone earns one more instead of more void.
+    The picks list is still <b>ranked once per page open and frozen</b> — geometry only chooses how many show.</li>
+    <li><b>The strip becomes the fold.</b> At four plaques the rows compress into today&rsquo;s pill strip — with the
+    tags removed: a pill whose verb must live at 5.5 pt should not carry a verb. The chip itself is the button (it
+    already is); the labeled AGAIN lives on the rows. Fold pills spend the freed width on the <b>name at a fixed
+    10 pt</b>.</li>
+    <li><b>The hero owns the crown slack.</b> The Duelists flex: <b>1.5×</b> with plaques standing · <b>1.85×</b> at
+    zero plaques · <b>2.0×</b> on the funnel and offline pages — the zenith star and the fly-in anchor ride the
+    scale; the sky rig itself is untouched.</li>
+    <li><b>The circle keeps its fiction.</b> A circle mage&rsquo;s row is dressed byte-alike a human&rsquo;s — the
+    gold glint, never the word &ldquo;online&rdquo;, no bot word anywhere. Rows redress on the 1-second tick
+    (dots, subs, tags) and <b>never reorder under a finger</b>.</li>
+  </ul></div>
+
+  <h2>III · THE REPLAY ROW — ANATOMY, AND THE TRUNCATION LAW</h2>
+  <p class="sub">One row builder serves the page and the sheet. The law it obeys, stated once and inherited by the
+  build card verbatim: <b style="color:var(--ink)">words never shrink to fit furniture — furniture sizes to words,
+  and only names ellipsize.</b></p>
+  <div class="anat">
+    <div class="bigrow">
+      <span class="dot"></span>
+      <span class="bt"><span class="bn">Moonlit Hare</span><br><span class="bs"><span class="rr">✦ 1024</span> · last night</span></span>
+      <span class="bp">AGAIN</span>
+    </div>
+    <div class="callout">
+      <span><b>row</b> 344×50, pitch 58 — the plaque&rsquo;s twin</span>
+      <span><b>presence dot</b> r 4.5 — green pulse / amber busy / gold glint (circle) / slate</span>
+      <span><b>name</b> fixed 13 pt · ellipsis at 168 units — <i>no font shrink, ever</i></span>
+      <span><b>sub</b> fixed 9.5 pt · rating + night-clock / presence word</span>
+      <span><b>pill</b> fixed 10 pt · width = its word (10-unit buckets, 76–128) · gold = starts now, dark = summons waits</span>
+      <span><b>tap</b> whole row + pill, 44-pt zones</span>
+    </div>
+  </div>
+  <h3>THE PILL SIZES TO ITS WORD — ALL FIVE LANGUAGES, NO SHRINK LOOP</h3>
+  <div class="pillrow" id="pillrow"></div>
+  <div class="lpl">vsAgain across en·es·fr·pt·de, each at the same fixed 10 pt — the bucket width printed beneath.
+  The same rule dresses vsDuelTag (DUEL·DUELO·DUEL·DUELO·DUELL).</div>
+  <div class="floorbox">
+    <div style="text-align:center"><div style="transform:scale(1);display:inline-block"><span style="background:#0d1228;border:1px solid #3a4577;color:#8a94c4;border-radius:99px;padding:2px 4px;font-size:5.5px;letter-spacing:.02em">OTRA VEZ</span></div>
+      <div class="lpl">today&rsquo;s floor, actual size —<br>the strip tag at 5.5 pt</div></div>
+    <div style="text-align:center"><span style="background:#0d1228;border:1px solid #3a4577;color:#8a94c4;border-radius:99px;padding:6px 12px;font-size:16.5px;letter-spacing:.06em">OTRA VEZ</span>
+      <div class="lpl">the same tag ×3 — what a phone<br>actually asks a child to read</div></div>
+    <div style="text-align:center"><span class="lp" style="padding:7px 22px">OTRA VEZ</span>
+      <div class="lpl">proposed: fixed 10 pt,<br>the pill grew instead</div></div>
+  </div>
+  <h3>THE LONG-NAME TEST</h3>
+  <div class="anat" style="padding:12px 18px">
+    <div class="bigrow" style="height:78px">
+      <span class="dot" style="background:#7fe0a0;box-shadow:0 0 12px rgba(127,224,160,.8)"></span>
+      <span class="bt"><span class="bn">Keeper of the Ninth Star</span><br><span class="bs">online</span></span>
+      <span class="bp" style="background:#0d1228;border:1px solid #3a4577;color:#9fb0e8">DUEL</span>
+    </div>
+    <div class="lpl" style="margin-top:8px">24 characters — the name input&rsquo;s own cap — measures ≈163 units at
+    13 pt Georgia: <b style="color:var(--ink)">the full worst-case name fits whole</b>. The ellipsis loop survives as
+    a guard (registry dedupe suffixes like &ldquo;Astral Raven 1&rdquo; can push past the cap), not as a lifestyle.</div>
+  </div>
+  <div class="note"><b>The truncation law, verbatim for the build card:</b>
+  <ol class="lawlist">
+    <li><b>Buttons and tags never shrink.</b> Pill width = ceil((textWidth+28)/10)·10, clamped 76–128, font fixed
+    10 pt. The 7.5→5.5 pt strip loop and the 9.5→7 pt sheet loop <b>die</b>.</li>
+    <li><b>Names never shrink.</b> Fixed 13 pt (page rows) / 13 pt (sheet rows) / 10 pt (fold pills), the shipped
+    ellipsis-while-loop at 168 / 128 / 78 units.</li>
+    <li><b>Subs never shrink.</b> Fixed 9.5 pt, same clip as their name.</li>
+    <li><b>Page floor:</b> nothing interactive under 10 pt, nothing readable under 8.5 pt — today&rsquo;s floors are
+    5.5 pt (interactive!) and 6.5–7 pt. The big gold doors keep their fit-to-width loops (long de/pt labels genuinely
+    need them) with the floor raised 7 → 9 pt.</li>
+    <li><b>Checked in all five languages</b> — the harness pins es OTRA VEZ and de NOCHMAL (the widest words) at
+    full 10 pt in their buckets, and a 24-char name whole at 13 pt.</li>
+  </ol></div>
+
+  <h2>IV · TWO SURFACES, ONE ANATOMY — WHY THE SHEET SURVIVES</h2>
+  <p class="sub">Keep both surfaces, unify the row. The <b style="color:var(--ink)">page</b> seats the few — ranked
+  picks, zero taps away. The <b style="color:var(--ink)">sheet</b> holds the many — the full friends roll, the deep
+  recent list, add-by-name, the app invite. One row builder means one truncation law everywhere; merging them
+  entirely would either scroll the scene (new machinery, new laws) or cap the roll at what the page can seat.
+  The &ldquo;› ALL MAGES&rdquo; door survives only in the fold — on the open page the gold CHALLENGE A FRIEND door
+  already <i>is</i> the sheet&rsquo;s front door, and two doors to one room is one too many.</p>
+  <div class="sheetrow">
+    <div>
+      <div class="phcap">SHEET TODAY — 372×380</div>
+      <div class="sheet" style="aspect-ratio:372/380" id="sheetB"></div>
+    </div>
+    <div>
+      <div class="phcap">SHEET PROPOSED — 372×448</div>
+      <div class="sheet" style="aspect-ratio:372/448" id="sheetA"></div>
+    </div>
+  </div>
+  <div class="note">The regrown sheet: panel 380 → <b>448</b> tall (still well inside the design box), row pitch
+  32 → <b>38</b>, names at fixed 13 pt with the bucket pill — and the freed height seats a <b>fourth recent
+  rival</b>. The friends rows, the +, the ✕ and the pinned invite keep their seats and their manners.</div>
+
+  <h2>V · TEXTURE — WHAT MAKES A ROW A PERSON <span style="font-size:13px;color:var(--dim)">(question 3)</span></h2>
+  <div class="note">A full-size row has room the pills never had. Two textures, both from data the game already
+  holds, <b>zero new synced data</b>:<br><br>
+  <b>The rating.</b> Sub-line leads with the mage&rsquo;s tier glyph + rating — <span style="color:#cfd8ff">✦ 1024</span> ·
+  last night. Humans: one registry read per row, ≤5 per page open, cached for the visit, the row dressing itself in
+  place when the number lands (the redress law — nothing reorders). Circle mages: the rival engine already keeps
+  their Elo. Stakes make a rematch worth wanting — &ldquo;can I take 1210?&rdquo; is a story; a bare name is not.<br><br>
+  <b>The last word (the flourish).</b> Where the ledger already holds it — near-duel notes carry the rival&rsquo;s
+  <code>lastWord</code> — the sub may whisper it instead of silence: <i>&ldquo;their last word: EMBER&rdquo;</i>.
+  Local-only, spotty by nature (live-sky duels don&rsquo;t note it today), so it is offered as the garnish, never the
+  spine.</div>
+
+  <h2>VI · THE LAWS THE BUILD INHERITS</h2>
+  <div class="note"><ol class="lawlist">
+    <li><b>safeB anchoring.</b> Doors at safeB−158/−90, whisper/note at safeB−44, formula verbatim (the suites pin
+    it). NEW: the funnel&rsquo;s three doors join the safeB family (safeB−370/−296/−222) and the offline retry
+    anchors safeB−158 — today both sit at fixed y and open a foot gap on tall phones.</li>
+    <li><b>The doorsC contract.</b> Doors live in a container, destroyed + rebuilt on funnel↔duels flips; container
+    children never appear in scene.children.list — suites aim at refs (chWorldB = the sentinel, chFriendB NULL in
+    funnel); every ref nulled in create() because scene instances persist across restarts.</li>
+    <li><b>pendC rebuilds, stripC redresses.</b> The replay rows live in pendC (their count is plaque-coupled), so
+    the pendKey gains the shown-row-count + picks component; the fold strip stays built-once. Picks rank once per
+    open; the 1-s tick redresses dots/subs/pills in place and never reorders.</li>
+    <li><b>44-pt tap zones</b> everywhere (rows are 50 tall; pills wear ssHitPad 44).</li>
+    <li><b>Five-duel cap pips</b>; an unclaimed summons holds no slot; every row action routes through the cap gate
+    (vsCapSheet) exactly as the chips do today.</li>
+    <li><b>Funnel and offline are designed states.</b> Funnel: hero 2.0 + fiction + three safeB-anchored doors — no
+    people invented for a device that knows nobody. Offline: the ghost ledger becomes ghost <i>rows</i> (same
+    anatomy, dimmed, no pills, the shipped status fiction as the sub) + vsGhost line + anchored retry.</li>
+    <li><b>The sky is kept.</b> ssSkyWorld versus dress, seed 0x1701, no moon, navy veil, crest fireflies — the hero
+    flex touches scale and anchors only.</li>
+    <li><b>Bots indistinguishable.</b> Circle rows byte-dress like human rows; glint, never &ldquo;online&rdquo;; no
+    circle/bot/ai word on any surface.</li>
+    <li><b>Record shapes kept.</b> pendRows verbatim; the new rosterRows records ship for the suites the way
+    chipRows do; vsGameRows() untouched.</li>
+    <li><b>The U+2694 grep gate stands.</b> Zero new strings ×5 — every word on the filled page already ships
+    (vsTonight, vsAgain, vsDuelTag, the presence words, the night-clock, vsGhost). No new art files.</li>
+    <li><b>Out of scope, named:</b> the HOME meadow duel strip (game.js ~6150–6239) is a different surface and does
+    not move. Card 03 (the in-battle duel column) is independent — a plaque&rsquo;s › still enters vsbattle, and any
+    battle doorway this design implies assumes card 03&rsquo;s bigger-health-bar language once it lands.</li>
+  </ol></div>
+
+  <h2>VII · BUILD COST, HONESTLY — AND THE ORDER</h2>
+  <div class="tblwrap"><table class="sweep">
+    <tr><th>SLICE</th><th>WHAT</th><th>SIZE</th></tr>
+    <tr><td><b>A · the rows + the fill law</b></td><td>replay rows in pendC, geometry-driven count, fold-to-strip at 4 plaques (detagged), picks frozen per open</td><td><span class="sz M">M</span></td></tr>
+    <tr><td><b>B · the truncation law</b></td><td>bucket pills + fixed fonts on page rows, fold pills, sheet rows; door floors 7→9; shrink loops removed</td><td><span class="sz S">S</span></td></tr>
+    <tr><td><b>C · the hero flex</b></td><td>three scales (1.5/1.85/2.0), zenith + fly-in anchors ride, reduced-motion honored</td><td><span class="sz S">S</span></td></tr>
+    <tr><td><b>D · funnel + offline respace</b></td><td>safeB-anchored funnel doors + retry, ghost rows, fiction reseats under the 2.0 hero</td><td><span class="sz S">S</span></td></tr>
+    <tr><td><b>E · the sheet regrown</b></td><td>panel 448, pitch 38, fourth recent, shared row anatomy</td><td><span class="sz S">S</span></td></tr>
+    <tr><td><b>F · the texture</b> <i style="color:var(--dim)">(gated on Q3)</i></td><td>ratings on rows (registry reads ≤5/open, cached, redress-in-place; circle Elo from the engine) · last-word garnish where held</td><td><span class="sz M">M</span></td></tr>
+    <tr><td><b>G · the harness</b></td><td>vspage re-aims (strip refs → row refs), fill-geometry pins ×5 states, truncation pins ×5 languages, fold-detag pin, funnel/offline anchor pins — rides the build card, ×3 green on final bytes</td><td><span class="sz M">M</span></td></tr>
+  </table></div>
+  <div class="note"><b>Suggested order:</b> one build card carries <b>A → B → C → D → E</b> (B is A&rsquo;s own law;
+  C/D/E are geometry riding the same rebuild), with G alongside — versus.js + tools only, <b>zero strings.js bytes,
+  zero game.js bytes</b>, roughly two dev-days. <b>F is its own card</b>, fired only if Q3 says so — it is the one
+  slice that adds reads. Per the queue law, nothing fires until the verdicts land and Skylar says go.</div>
+
+  <h2>FOR SKYLAR — ANSWER BY NUMBER</h2>
+  <div id="qs"></div>
+
+  <div class="prov">Astro (Skylar&rsquo;s console) · 2026-09-22 · <b>Nothing here is built — zero game bytes were
+  touched for this page.</b> Sources: live game v0.103.0 (HEAD 4f35e097; versus.js read end-to-end — the measured
+  stack is v0.102.0&rsquo;s, byte-identical but for the App Store URL) · the shipped sky-world / letterpress /
+  nine-slice / plaque systems, reused verbatim in the mocks · strings.js ×5 for every word shown · prior rounds:
+  <a href="https://skypilot82.github.io/starspell-under-one-sky/">under one sky (9/9)</a> ·
+  <a href="https://skypilot82.github.io/starspell-turning-sky/">the turning sky</a>. Mock names are circle-minter
+  names; every string on the mocks ships today.</div>
+</div>
+
+<div class="bar">
+  <span class="cnt"><b id="ruled">0</b> / 4 ruled</span>
+  <span class="barnote">chips + notes save on this device; COPY VERDICTS builds the paste-back block</span>
+  <button class="copy" onclick="copyVerdicts()">COPY VERDICTS</button>
+  <span class="copied" id="copied"></span>
+</div>
+
+<script>
+/* ============ shared bits (the under-one-sky toolkit, extended) ============ */
+function mul(seed){let t=seed>>>0;return function(){t+=0x6D2B79F5;let r=Math.imul(t^t>>>15,1|t);r^=r+Math.imul(r^r>>>7,61|r);return((r^r>>>14)>>>0)/4294967296}}
+function stars(o){
+  const r=mul(o.seed||7), n=o.n||24, w=o.w||390, h=o.h||760;let s='';
+  for(let i=0;i<n;i++){
+    const x=(r()*w).toFixed(1), y=(Math.pow(r(),o.bias||1)*h).toFixed(1),
+          rad=((o.rmin||.5)+((o.rmax||1.4)-(o.rmin||.5))*r()).toFixed(2),
+          c=(o.cols||['#cfd8ff'])[Math.floor(r()*(o.cols||['#cfd8ff']).length)], op=(.3+r()*.5).toFixed(2);
+    s+='<circle cx="'+x+'" cy="'+y+'" r="'+rad+'" fill="'+c+'" opacity="'+op+'"/>';
+  }
+  return s;
+}
+function blades(size, op){
+  op=op||1;
+  const blade='<g><path d="M0 -46 L4 -38 L3 18 L0 24 L-3 18 L-4 -38 Z" fill="url(#blgrad)" stroke="#8a6210" stroke-width="1"/>'
+    +'<rect x="-11" y="18" width="22" height="5" rx="2.5" fill="#c9a94f" stroke="#7a5c1a" stroke-width="0.8"/>'
+    +'<rect x="-1.8" y="23" width="3.6" height="10" fill="#a8873a"/>'
+    +'<circle cx="0" cy="36" r="4.2" fill="#c9a94f" stroke="#7a5c1a" stroke-width="0.8"/></g>';
+  return '<svg width="'+size+'" height="'+size+'" viewBox="-50 -50 100 100" style="opacity:'+op+'">'
+    +'<defs><linearGradient id="blgrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ead9a4"/><stop offset=".5" stop-color="#d9bd7a"/><stop offset="1" stop-color="#b3903f"/></linearGradient></defs>'
+    +'<g transform="rotate(24)">'+blade+'</g><g transform="rotate(-24)">'+blade+'</g></svg>';
+}
+const MAGE_STARS=[[-58,-56],[-72,-40],[-44,-42],[-74,-22],[-48,-24],[-34,-36],[-18,-50],[-64,0],[-82,42],[-58,50],[-38,40]];
+const MAGE_EDGES=[[0,1],[0,2],[1,3],[2,4],[4,5],[5,6],[3,7],[7,8],[8,9],[9,10],[10,4]];
+const MAGE_MAG=[3.3,2.2,2.2,2.6,2.6,2.2,3.4,2.6,2.4,2.9,2.4];
+function mageSVG(mir, tint, dim){
+  const a = dim? .45 : 1;
+  let s='<g opacity="'+a+'">';
+  const P=MAGE_STARS.map(function(p){return [mir? -p[0]:p[0], p[1]]});
+  MAGE_EDGES.forEach(function(e){const p=P[e[0]],q=P[e[1]];
+    s+='<line x1="'+p[0]+'" y1="'+p[1]+'" x2="'+q[0]+'" y2="'+q[1]+'" stroke="'+tint+'" stroke-opacity=".5" stroke-width="1.5"/>'});
+  P.forEach(function(p,i){const r=MAGE_MAG[i];
+    s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(r*1.9)+'" fill="'+tint+'" fill-opacity=".13"/>'
+     +'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+r+'" fill="'+tint+'"/>';
+    if(r>=3) s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(r*.4)+'" fill="#fff6dd" fill-opacity=".5"/>';
+  });
+  return s+'</g>';
+}
+function zenith(x,y,flare,unlit){
+  if(unlit) return '<circle cx="'+x+'" cy="'+y+'" r="2.6" fill="#4a5480"/>';
+  const R=flare?26:15;
+  return '<circle cx="'+x+'" cy="'+y+'" r="'+R+'" fill="#ffe9c9" opacity="'+(flare?.22:.14)+'"/>'
+   +'<path d="M'+x+' '+(y-9)+' L'+(x+1.8)+' '+(y-1.8)+' L'+(x+9)+' '+y+' L'+(x+1.8)+' '+(y+1.8)+' L'+x+' '+(y+9)+' L'+(x-1.8)+' '+(y+1.8)+' L'+(x-9)+' '+y+' L'+(x-1.8)+' '+(y-1.8)+' Z" fill="#fff2c9"/>'
+   +'<circle cx="'+x+'" cy="'+y+'" r="2.6" fill="#fff7dc"/>';
+}
+function duelists(o){
+  o=o||{};
+  const g=o.gap||78;
+  let s='<svg viewBox="-132 -78 264 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">';
+  s+='<circle cx="0" cy="-6" r="110" fill="#c9a94f" opacity="'+(o.dim?0.02:0.05)+'"/>';
+  s+='<g transform="translate('+(-g+62)+',0)">'+mageSVG(false,'#d7b45c',o.dim)+'</g>';
+  s+='<g transform="translate('+(g-62)+',0)">'+mageSVG(true,'#9fb0e8',o.dim)+'</g>';
+  s+=zenith(0,-58,o.flare,o.unlit);
+  return s+'</svg>';
+}
+function pips(lit){let s='';for(let i=0;i<5;i++)s+='<span class="pip" style="background:'+(i<lit?'#ffd77a':'#39406b')+'"></span>';return s}
+function plaque(o){
+  return '<div class="plaq '+(o.cls||'')+'" style="top:'+o.top+'%">'
+   +'<span class="pl-g">'+blades(14,.9)+'</span>'
+   +'<span class="pl-t"><span class="pl-n">'+o.name+'</span><br><span class="pl-s">'+o.status+'</span></span>'
+   +(o.accept?'<span class="pl-a">ACCEPT</span>':'<span class="pl-r">'+(o.right||'')+'</span>')
+   +'</div>';
+}
+function rrow(o){ /* {top, dot, glow?, name, sub, pill?, pillCls, ghost?} */
+  return '<div class="rrow'+(o.ghost?' ghost':'')+'" style="top:'+o.top+'%">'
+   +'<span class="dot" style="background:'+o.dot+';'+(o.glow?('box-shadow:0 0 8px '+o.dot):'')+'"></span>'
+   +'<span class="rt"><span class="rn"'+(o.sub?'':' style="line-height:2.4"')+'>'+o.name+'</span>'+(o.sub?('<br><span class="rs">'+o.sub+'</span>'):'')+'</span>'
+   +(o.pill?('<span class="rpill '+(o.pillCls||'g')+'">'+o.pill+'</span>'):'')
+   +'</div>';
+}
+function vchip(o){ /* {dot, name, sub, tag, tagCls, notag, tagFs} */
+  if(o.notag) return '<div class="vchip notag"><span class="dot" style="background:'+o.dot+';'+(o.glow?('box-shadow:0 0 8px '+o.dot):'')+'"></span>'
+   +'<span class="cn"><span class="nm">'+o.name+'</span></span></div>';
+  return '<div class="vchip"><span class="dot" style="background:'+o.dot+';'+(o.glow?('box-shadow:0 0 8px '+o.dot):'')+'"></span>'
+   +'<span class="cn"><span class="nm">'+o.name+'</span><br><span class="sb">'+o.sub+'</span></span>'
+   +'<span class="tag '+(o.tagCls||'g')+'" style="font-size:'+(o.tagFs||6.5)+'px">'+o.tag+'</span></div>';
+}
+function door(o){return '<div class="door '+(o.cls||'')+'" style="top:'+o.top+'%"><div class="dl">'+o.l+'</div>'+(o.s?'<div class="ds">'+o.s+'</div>':'')+'</div>'}
+function voidbr(topPct,botPct,label){return '<div class="voidbr" style="top:'+topPct+'%;height:'+(botPct-topPct)+'%"><span class="voidlab">'+label+'</span></div>'}
+function worldBG(o){
+  o=o||{};
+  let s='<div class="lay" style="background:linear-gradient(180deg,#0a0d1c 0%,#0b0f26 48%,#10142e 72%,#181230 86%,#241a38 93%,#2b1e3d 100%)"></div>';
+  s+='<div class="aur" style="left:-24%;top:30%;background:radial-gradient(circle,#2fe0d0 0%,transparent 62%);opacity:'+(o.dim?.05:.1)+'"></div>';
+  s+='<div class="aur" style="left:58%;top:56%;background:radial-gradient(circle,#8a5ae0 0%,transparent 62%);opacity:'+(o.dim?.05:.1)+'"></div>';
+  s+='<svg class="lay" viewBox="0 0 390 760" preserveAspectRatio="xMidYMid slice">'
+    +stars({n:120,w:390,h:760,cols:['#cfd8ff','#cfd8ff','#ffe9c9','#ffd1dc'],rmin:.4,rmax:1.6,seed:o.seed||17,bias:.85})
+    +'<path d="M0 700 Q90 664 200 690 T390 678 L390 760 L0 760 Z" fill="#141026"/>'
+    +'<path d="M0 722 Q120 692 250 716 T390 706 L390 760 L0 760 Z" fill="#0c0918"/>'
+    +'<path d="M0 700 Q90 664 200 690 T390 678" fill="none" stroke="#ffc98a" stroke-opacity=".14" stroke-width="1.2"/>'
+    +(o.dim?'':[[52,712],[128,734],[236,716],[318,736],[172,748],[292,704]].map(function(p,i){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1.6" fill="#ffdf8f" opacity="'+(0.5+(i%3)*0.15)+'"/>'}).join(''))
+    +'</svg>';
+  return s;
+}
+
+/* ============ the phones — five states, before and after ============ */
+const wordmark = blades(18,.95)+'<span style="margin:0 8px">VERSUS</span>'+blades(18,.95);
+function crown(o){ /* {chip, heroScale, dim, flare, unlit, seed} */
+  let s=worldBG({seed:o.seed||17, dim:o.dim});
+  s+='<div class="grain"></div>';
+  s+='<div class="ph-back">‹ HOME</div>';
+  if(o.chip) s+='<div class="ph-chip">'+o.chip+'</div>';
+  s+='<div class="ph-word">'+wordmark+'</div>';
+  s+='<div class="ph-cap">turn-based duels · cast in your own time</div>';
+  const sc=o.heroScale||1;
+  s+='<div class="lay" style="top:13.5%;height:24%;pointer-events:none;transform:scale('+sc+');transform-origin:50% 12%">'
+    +duelists({dim:o.dim, flare:o.flare, unlit:o.unlit})+'</div>';
+  return s;
+}
+const GOLD='#ffd77a', GREEN='#7fe0a0', SLATE='#39406b';
+function foot(withWhisper){
+  let s=door({top:76.5, l:'CHALLENGE A FRIEND', s:'your friends and recent rivals await'})
+       +door({top:85, l:'CHALLENGE WORLDWIDE', s:'quick match beneath the open sky'});
+  if(withWhisper) s+='<div class="ph-note" style="top:93.6%;font-size:8.5px">✦ 12 versus victories</div>';
+  return s;
+}
+function beforePhone(st){
+  if(st==='zero'){
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
+    s+='<div class="ph-strip" style="top:39.5%">under this sky tonight</div>';
+    s+='<div class="chips-row" style="top:41.6%">'
+      +vchip({dot:GREEN, glow:1, name:'Moonlit H…', sub:'online', tag:'DUEL', tagCls:'g'})
+      +vchip({dot:'#c9b676', name:'Dawn Scr…', sub:'last night', tag:'AGAIN', tagCls:'d'})
+      +'<div class="vchip all">› ALL MAGES</div>'
+      +'</div>';
+    s+=voidbr(47.5,75.2,'≈282 design pts of dead night');
+    s+=foot(1);
+    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+  }
+  if(st==='mid'){
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1, flare:true});
+    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(2)+'</span></div>';
+    s+=plaque({top:38.9, cls:'sum', name:'Silver Weaver', status:'challenges you — the seal is set', accept:1});
+    s+=plaque({top:46.1, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
+    s+=plaque({top:53.4, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
+    s+='<div class="ph-strip" style="top:61.4%">under this sky tonight</div>';
+    s+='<div class="chips-row" style="top:63.5%">'
+      +vchip({dot:GREEN, glow:1, name:'Moonlit H…', sub:'online', tag:'DUEL', tagCls:'g'})
+      +vchip({dot:'#c9b676', name:'Dawn Scr…', sub:'last night', tag:'AGAIN', tagCls:'d'})
+      +'<div class="vchip all">› ALL MAGES</div>'
+      +'</div>';
+    s+=voidbr(69.2,75.2,'≈76 pts');
+    s+=foot(1);
+    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+  }
+  if(st==='fold'){
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
+    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(4)+'</span></div>';
+    s+=plaque({top:38.9, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
+    s+=plaque({top:46.1, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
+    s+=plaque({top:53.4, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
+    s+=plaque({top:60.6, name:'Ember Warden', status:'the duel is decided', right:'›'});
+    s+='<div class="chips-row" style="top:69.4%">'
+      +vchip({dot:GREEN, glow:1, name:'Moonlit H…', sub:'online', tag:'DUEL', tagCls:'g'})
+      +vchip({dot:'#c9b676', name:'Dawn Scr…', sub:'last night', tag:'AGAIN', tagCls:'d'})
+      +'<div class="vchip all">› ALL MAGES</div>'
+      +'</div>';
+    s+=foot(1);
+    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+  }
+  if(st==='funnel'){
+    let s=crown({chip:'✧ Wispfall', heroScale:1, seed:19});
+    s+='<div class="ph-fic" style="top:40.2%">no rivals yet — your first duel<br>writes the first name here</div>';
+    s+=door({top:48, l:'CHALLENGE WORLDWIDE', s:'quick match beneath the open sky'});
+    s+=door({top:57.5, cls:'dark', l:'ADD A FRIEND BY NAME', s:'seek a mage among the stars'});
+    s+=door({top:66.75, cls:'dark', l:'✶ INVITE A NEW FRIEND', s:'a link that brings them into the game'});
+    s+=voidbr(75.5,92.5,'fixed-y doors — a tall phone opens a foot gap');
+    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+  }
+  /* offline */
+  let s=crown({heroScale:1, dim:true, unlit:true, seed:18});
+  s+='<div class="ph-fic" style="top:40.2%;color:#8c5a5a">the wider sky is unreachable —<br>duels need a connection</div>';
+  s+='<div class="ph-fic" style="top:50%;font-size:9px;opacity:.6">Quiet Owl · Umbral Raven</div>';
+  s+='<div class="ph-fic" style="top:53%;font-size:7.5px">their stars return with the connection</div>';
+  s+=door({top:58.6, cls:'dark', l:'TRY THE SKY AGAIN'});
+  s+=voidbr(67,92.5,'≈230 pts to the foot');
+  return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+}
+function afterPhone(st){
+  if(st==='zero'){
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1.23});
+    s+='<div class="ph-strip" style="top:43.6%;font-size:9.5px">— under this sky tonight —</div>';
+    s+=rrow({top:45.1, dot:GREEN, glow:1, name:'Moonlit Hare', sub:'<span class="rr">✦ 1024</span> · online', pill:'DUEL', pillCls:'g'});
+    s+=rrow({top:52.35, dot:'#c9b676', name:'Dawn Scribe', sub:'<span class="rr">✦ 987</span> · last night', pill:'AGAIN', pillCls:'d'});
+    s+=rrow({top:59.6, dot:GOLD, glow:1, name:'Astral Raven', sub:'<span class="rr">✦ 1042</span>', pill:'DUEL', pillCls:'g'});
+    s+=rrow({top:66.85, dot:GOLD, glow:1, name:'Keeper of the Ninth Star', sub:'<span class="rr">✧ 812</span>', pill:'DUEL', pillCls:'g'});
+    s+=foot(1);
+    return s+'<div class="mockcap">MOCK · SHIPPED STRINGS · ZERO NEW DATA (RATINGS = Q3)</div>';
+  }
+  if(st==='mid'){
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1, flare:true});
+    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(2)+'</span></div>';
+    s+=plaque({top:38.9, cls:'sum', name:'Silver Weaver', status:'challenges you — the seal is set', accept:1});
+    s+=plaque({top:46.1, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
+    s+=plaque({top:53.4, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
+    s+='<div class="ph-strip" style="top:62.1%">— under this sky tonight —</div>';
+    s+=rrow({top:63.75, dot:GREEN, glow:1, name:'Moonlit Hare', sub:'<span class="rr">✦ 1024</span> · online', pill:'DUEL', pillCls:'g'});
+    s+=foot(1);
+    return s+'<div class="mockcap">MOCK · THE SUMMONS PLATE + ZENITH FLARE AS SHIPPED</div>';
+  }
+  if(st==='fold'){
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
+    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(4)+'</span></div>';
+    s+=plaque({top:38.9, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
+    s+=plaque({top:46.1, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
+    s+=plaque({top:53.4, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
+    s+=plaque({top:60.6, name:'Ember Warden', status:'the duel is decided', right:'›'});
+    s+='<div class="chips-row" style="top:69.4%">'
+      +vchip({notag:1, dot:GREEN, glow:1, name:'Moonlit Hare'})
+      +vchip({notag:1, dot:'#c9b676', name:'Dawn Scribe'})
+      +'<div class="vchip all">› ALL MAGES</div>'
+      +'</div>';
+    s+=foot(1);
+    return s+'<div class="mockcap">MOCK · THE FOLD, DETAGGED — THE CHIP IS THE BUTTON</div>';
+  }
+  if(st==='funnel'){
+    let s=crown({chip:'✧ Wispfall', heroScale:1.33, seed:19});
+    s+='<div class="ph-fic" style="top:44.5%">no rivals yet — your first duel<br>writes the first name here</div>';
+    s+=door({top:50, l:'CHALLENGE WORLDWIDE', s:'quick match beneath the open sky'});
+    s+=door({top:59.5, cls:'dark', l:'ADD A FRIEND BY NAME', s:'seek a mage among the stars'});
+    s+=door({top:68.75, cls:'dark', l:'✶ INVITE A NEW FRIEND', s:'a link that brings them into the game'});
+    return s+'<div class="mockcap">MOCK · HERO 2.0 · DOORS JOIN THE safeB FAMILY</div>';
+  }
+  let s=crown({heroScale:1.33, dim:true, unlit:true, seed:18});
+  s+='<div class="ph-fic" style="top:45.4%;color:#8c5a5a">the wider sky is unreachable —<br>duels need a connection</div>';
+  s+=rrow({top:48.4, dot:SLATE, name:'Quiet Owl', sub:'✦ your move', ghost:1});
+  s+=rrow({top:55.65, dot:SLATE, name:'Umbral Raven', sub:'Umbral Raven weaves…', ghost:1});
+  s+='<div class="ph-fic" style="top:64.75%;font-size:8px">their stars return with the connection</div>';
+  s+=door({top:74.1, cls:'dark', l:'TRY THE SKY AGAIN'});
+  return s+'<div class="mockcap">MOCK · THE GHOST LEDGER AS ROWS · RETRY ANCHORED</div>';
+}
+
+const STATES=[
+ {k:'zero', t:'ZERO DUELS', n:'ZERO DUELS — THE WORST VOID DIES',
+  c:'<b>The state Skylar is describing.</b> Today: two clipped pills, then ≈282 points of bare night before the doors. Proposed: the Duelists breathe up to 1.85×, and the people worth re-fighting take the ground as full rows — a friend online, a rival with the night-clock, two mages of the circle glinting ready (dressed exactly like the humans; the fiction holds). Four rows on a box-exact phone, five on a tall one — the fill law reads safeB, so bigger screens get more people, not more void. Every word is a shipped string.'},
+ {k:'mid', t:'MID-DUELS', n:'MID-DUELS — BUSINESS FIRST, PEOPLE AFTER',
+  c:'<b>A summons plate + two duels standing.</b> The plaque band is untouched — gold ACCEPT plate, breathing your-move rim, cap pips, the zenith star flaring for the summons. The change is beneath: the leftover ground seats exactly as many replay rows as fit (here, one — Moonlit Hare at full size with a legible DUEL pill) instead of two clipped pills over a 76-point gap.'},
+ {k:'fold', t:'FULL FOLD', n:'FOUR PLAQUES — THE FOLD, DETAGGED',
+  c:'<b>The busy page was never the problem — so it barely changes.</b> At four plaques the rows compress into today&rsquo;s pill strip, minus the tags: a verb that must live at 5.5&nbsp;pt should not exist, and the chip was always the button anyway. The freed width goes to the name at a fixed 10&nbsp;pt — &ldquo;Moonlit Hare&rdquo; whole instead of &ldquo;Moonlit H…&rdquo; with an unreadable AGAIN beside it. The labeled AGAIN lives on the rows and in the sheet.'},
+ {k:'funnel', t:'FUNNEL', n:'FIRST VISIT — THE CROWN GROWS, THE DOORS ANCHOR',
+  c:'<b>A fresh device knows nobody, and the page must not invent acquaintances</b> — so the funnel keeps its honest three doors and gains two things: the Duelists at 2.0× (the sky owns the crown), and safeB anchoring for the doors, which today sit at fixed y and open a foot gap on tall phones. No people are minted for a player who has not yet met the circle.'},
+ {k:'offline', t:'OFFLINE', n:'OFFLINE — THE GHOSTS GET THEIR ROWS',
+  c:'<b>Still a place, now a furnished one.</b> The dimmed Duelists grow to 2.0×, and the ghost ledger — today a single joined line of names — becomes dimmed rows in the same anatomy: slate dot, full-size name, the duel&rsquo;s own status fiction as the sub, no pills (nothing is tappable without a sky). TRY THE SKY AGAIN anchors to the true foot. The page reads as your duels asleep, not as a dead end.'}
+];
+let CUR=0;
+function setState(i){
+  CUR=i;
+  document.getElementById('phoneB').innerHTML=beforePhone(STATES[i].k);
+  document.getElementById('phoneA').innerHTML=afterPhone(STATES[i].k);
+  document.getElementById('statecopy').innerHTML='<h3 style="margin-top:0">'+STATES[i].n+'</h3>'+STATES[i].c;
+  document.querySelectorAll('.stab').forEach(function(t,j){t.classList.toggle('on',j===i)});
+}
+(function(){
+  const tw=document.getElementById('statetabs');
+  STATES.forEach(function(st,i){
+    const b=document.createElement('button');b.className='stab';b.innerHTML='<div class="r">'+st.t+'</div>';
+    b.onclick=function(){setState(i)};tw.appendChild(b);
+  });
+  setState(0);
+})();
+
+/* ============ the language pills (bucket rule, live) ============ */
+(function(){
+  const words=[['en','AGAIN'],['es','OTRA VEZ'],['fr','ENCORE'],['pt','DE NOVO'],['de','NOCHMAL']];
+  const row=document.getElementById('pillrow');
+  const meas=document.createElement('span');
+  meas.style.cssText='position:absolute;visibility:hidden;font:13px Georgia,serif;letter-spacing:.1em;white-space:pre';
+  document.body.appendChild(meas);
+  words.forEach(function(w){
+    meas.textContent=w[1];
+    const tw=meas.getBoundingClientRect().width/13*10;      /* width in design units at 10pt */
+    const bucket=Math.min(128,Math.max(76,Math.ceil((tw+28)/10)*10));
+    const d=document.createElement('div');
+    d.innerHTML='<div class="lp" style="width:'+(bucket*1.55)+'px">'+w[1]+'</div><div class="lpl">'+w[0]+' · bucket '+bucket+'</div>';
+    row.appendChild(d);
+  });
+  meas.remove();
+})();
+
+/* ============ the sheet mocks ============ */
+(function(){
+  function frow(top,o){ /* sheet friend/recent row */
+    return '<div class="srow" style="top:'+top+'%">'
+     +'<span class="dot" style="background:'+o.dot+';'+(o.glow?('box-shadow:0 0 7px '+o.dot):'')+'"></span>'
+     +'<span class="st"><span class="sn" style="font-size:'+(o.big?10.5:9.5)+'px">'+o.name+'</span>'
+     +(o.sub?('<br><span class="ss">'+o.sub+'</span>'):'')+'</span>'
+     +(o.btn?('<span class="sbtn '+(o.btnCls||'g')+'" style="font-size:'+(o.big?8.5:7.5)+'px;padding:'+(o.big?'4px 10px':'3px 7px')+'">'+o.btn+'</span>'):'')
+     +(o.plus?'<span class="sx" style="color:#9fb0e8">+</span>':'')
+     +'<span class="sx">✕</span></div>';
+  }
+  const B=document.getElementById('sheetB');
+  B.innerHTML=
+   '<div class="sh-h" style="top:5.2%">— FRIENDS —</div><div class="sh-plus" style="right:26%;top:4.6%">+</div><div class="sh-x" style="top:5%">✕</div>'
+   +frow(13.6,{dot:'#7fe0a0',glow:1,name:'Moonlit Hare',sub:'online',btn:'CHALLENGE'})
+   +frow(23.6,{dot:'#39406b',name:'Quiet Owl',sub:'seen 2h ago',btn:'CHALLENGE',btnCls:'d'})
+   +frow(33.6,{dot:'#39406b',name:'Silver Weaver',sub:'offline',btn:'CHALLENGE',btnCls:'d'})
+   +'<div class="sh-h" style="top:43.7%">— RECENT RIVALS —</div>'
+   +frow(50.5,{dot:'#ffd77a',glow:1,name:'Astral Raven',sub:'tonight',btn:'AGAIN',plus:1})
+   +frow(58.9,{dot:'#c9b676',name:'Dawn Scribe',sub:'last night',btn:'AGAIN',btnCls:'d',plus:1})
+   +frow(67.4,{dot:'#39406b',name:'Keeper of the Nin…',sub:'4 nights ago',btn:'AGAIN',btnCls:'d',plus:1})
+   +'<div class="sh-inv" style="top:79.5%;height:13.9%"><div class="a">✶ INVITE A NEW FRIEND</div><div class="b">a link that brings them into the game</div></div>'
+   +'<div class="mockcap">MOCK OF v0.103.0 · 3 RECENTS · 12pt NAMES · 7pt FLOORS</div>';
+  const A=document.getElementById('sheetA');
+  A.innerHTML=
+   '<div class="sh-h" style="top:4.4%">— FRIENDS —</div><div class="sh-plus" style="right:26%;top:3.9%">+</div><div class="sh-x" style="top:4.2%">✕</div>'
+   +frow(11.6,{big:1,dot:'#7fe0a0',glow:1,name:'Moonlit Hare',sub:'✦ 1024 · online',btn:'CHALLENGE'})
+   +frow(20.1,{big:1,dot:'#39406b',name:'Quiet Owl',sub:'✦ 1151 · seen 2h ago',btn:'CHALLENGE',btnCls:'d'})
+   +frow(28.6,{big:1,dot:'#39406b',name:'Silver Weaver',sub:'✦ 967 · offline',btn:'CHALLENGE',btnCls:'d'})
+   +'<div class="sh-h" style="top:37.5%">— RECENT RIVALS —</div>'
+   +frow(43.5,{big:1,dot:'#ffd77a',glow:1,name:'Astral Raven',sub:'✦ 1042 · tonight',btn:'AGAIN',plus:1})
+   +frow(52,{big:1,dot:'#c9b676',name:'Dawn Scribe',sub:'✦ 987 · last night',btn:'AGAIN',btnCls:'d',plus:1})
+   +frow(60.5,{big:1,dot:'#39406b',name:'Keeper of the Ninth Star',sub:'✧ 812 · 4 nights ago',btn:'AGAIN',btnCls:'d',plus:1})
+   +frow(69,{big:1,dot:'#ffd77a',glow:1,name:'Ember Warden',sub:'✦ 1210 · 6 nights ago',btn:'AGAIN',plus:1})
+   +'<div class="sh-inv" style="top:82.6%;height:11.8%"><div class="a">✶ INVITE A NEW FRIEND</div><div class="b">a link that brings them into the game</div></div>'
+   +'<div class="mockcap">MOCK · PANEL 448 · PITCH 38 · A FOURTH RECENT · BUCKET PILLS</div>';
+})();
+
+/* ============ verdicts ============ */
+const QS=[
+ {id:'q1',t:'THE FILLED GROUND',d:'The middle fills by law: plaques first, then full-size replay rows drawn from the people the game already knows, as many as the ground grants (safeB-aware — tall phones seat one more). The pill strip survives only as the fold at four plaques. The void dies by construction in every state.',o:['BUILD','TWEAK — SEE NOTES','HOLD']},
+ {id:'q2',t:'THE CIRCLE&rsquo;S SHARE',d:'The fill draws friends online → recent rivals → mages of the circle. On a quiet night that can seat up to three circle mages as full rows — dressed byte-alike the humans, glinting ready, never labeled online. How much ground may the circle hold?',o:['FILL WITH THE CIRCLE ★','AT MOST ONE STRANGER','HUMANS ONLY — THE VOID MAY RETURN']},
+ {id:'q3',t:'TEXTURE ON THE ROWS',d:'The sub-line leads with the mage&rsquo;s rating ("✦ 1024 · last night") — ≤5 registry reads per page open, cached, rows dressing in place when numbers land; circle ratings come from the rival engine&rsquo;s own Elo. Optionally, where a near-duel note already holds it, the sub may whisper their last word ("their last word: EMBER").',o:['RATINGS ★','RATINGS + LAST WORD','PRESENCE ONLY']},
+ {id:'q4',t:'THE HERO FLEX',d:'The Duelists grow when the ground is thin: 1.5× with plaques standing · 1.85× at zero plaques · 2.0× on funnel and offline. The zenith star and the fly-in ride the scale; the sky rig is untouched. Or keep one fixed size and let the crown keep its slack.',o:['FLEX AS SHOWN ★','KEEP ONE SIZE']}
+];
+const VKEY='ssDuelingGround.v1';
+let V={};try{V=JSON.parse(localStorage.getItem(VKEY)||'{}')}catch(e){}
+function saveV(){try{localStorage.setItem(VKEY,JSON.stringify(V))}catch(e){}
+  let n=0;QS.forEach(function(q){if(V[q.id])n++});
+  document.getElementById('ruled').textContent=n;}
+(function(){
+  let h='';
+  QS.forEach(function(q,i){
+    h+='<div class="q"><div class="qt"><b>'+(i+1)+'</b> · '+q.t+'</div><div class="qd">'+q.d+'</div><div class="chips">'
+     +q.o.map(function(o){return'<button class="chip" data-q="'+q.id+'" data-o="'+o.replace(/"/g,'&quot;')+'">'+o+'</button>'}).join('')
+     +'</div><input class="qnote" data-q="'+q.id+'" placeholder="notes…"></div>';
+  });
+  document.getElementById('qs').innerHTML=h;
+  document.querySelectorAll('.chip').forEach(function(c){
+    c.onclick=function(){
+      const q=c.dataset.q;V[q]=c.dataset.o;
+      document.querySelectorAll('.chip[data-q="'+q+'"]').forEach(function(x){x.classList.toggle('on',x===c)});
+      saveV();
+    };
+    if(V[c.dataset.q]===c.dataset.o)c.classList.add('on');
+  });
+  document.querySelectorAll('.qnote').forEach(function(n){
+    n.value=V['note_'+n.dataset.q]||'';
+    n.addEventListener('input',function(){V['note_'+n.dataset.q]=n.value;saveV()});
+  });
+  saveV();
+})();
+function copyVerdicts(){
+  let t='THE DUELING GROUND, FILLED — verdicts — 2026-09-22\n';
+  QS.forEach(function(q,i){
+    const div=document.createElement('div');div.innerHTML=q.t;
+    t+=(i+1)+') '+div.textContent+': '+(V[q.id]||'—')+(V['note_'+q.id]?(' — '+V['note_'+q.id]):'')+'\n';
+  });
+  function done(){document.getElementById('copied').textContent='copied ✓';setTimeout(function(){document.getElementById('copied').textContent=''},2000)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){prompt('Copy:',t)})}
+  else prompt('Copy:',t);
+}
+</script>
+</body>
+</html>
