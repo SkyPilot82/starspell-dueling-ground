@@ -104,6 +104,15 @@
   @media(max-width:740px){.swipehint{display:block}.stage{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scroll-snap-type:x mandatory;padding-bottom:8px}
     .phonewrap{flex:0 0 78%;scroll-snap-align:center}}
 
+  /* the 1→4 plaque ladder — full phones scaled down */
+  .ladrow{display:flex;gap:14px;overflow-x:auto;justify-content:flex-start;padding:4px 2px 8px;margin-top:14px}
+  @media(min-width:900px){.ladrow{justify-content:center}}
+  .ladcell{flex:0 0 auto;width:176px}
+  .ladframe{width:176px;height:343px;position:relative;overflow:hidden;border-radius:18px}
+  .ladphone{width:320px;height:623px;transform:scale(0.55);transform-origin:0 0;position:absolute;left:0;top:0;
+            border-radius:30px;border:1px solid #2a3160;overflow:hidden;background:#0a0d1c}
+  .ladcap{font-size:10px;letter-spacing:.14em;color:var(--dim);text-align:center;margin-top:6px}
+
   /* ---------- anatomy ---------- */
   .anat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
   .bigrow{position:relative;max-width:640px;margin:12px auto;background:linear-gradient(180deg,#1a2142,#12172f);border:1.5px solid #3a4577;border-radius:14px;height:92px;display:flex;align-items:center;padding:0 26px}
@@ -220,6 +229,12 @@
     <div class="phonewrap"><div class="phcap">PROPOSED — FILLED</div><div class="phone" id="phoneA"></div></div>
   </div>
   <div class="statecopy" id="statecopy"></div>
+
+  <h3>THE PLAQUE LADDER — 1 → 4 STANDING DUELS, PROPOSED</h3>
+  <p class="sub">The in-between states, so no plaque count is taken on faith: the duel band never moves, and the
+  replay rows yield a slot at a time until the fold. (Zero duels and the fold live full-size in the tabs above.)</p>
+  <div class="ladrow" id="ladrow"></div>
+  <div class="ladcap" style="margin-top:2px">the fill law breathing: 1 plaque · 3 rows → 2 · 2 → 3 · 1 → 4 · the detagged fold</div>
 
   <div class="note" style="margin-top:20px"><b>The fill law, once</b> (what the build implements):
   <ul class="lawlist">
@@ -544,7 +559,7 @@ function beforePhone(st){
   }
   if(st==='fold'){
     let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
-    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(4)+'</span></div>';
+    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(3)+'</span></div>';
     s+=plaque({top:38.9, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
     s+=plaque({top:46.1, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
     s+=plaque({top:53.4, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
@@ -599,7 +614,7 @@ function afterPhone(st){
   }
   if(st==='fold'){
     let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
-    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(4)+'</span></div>';
+    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(3)+'</span></div>';
     s+=plaque({top:38.9, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
     s+=plaque({top:46.1, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
     s+=plaque({top:53.4, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
@@ -656,6 +671,45 @@ function setState(i){
     b.onclick=function(){setState(i)};tw.appendChild(b);
   });
   setState(0);
+})();
+
+/* ============ the plaque ladder — 1→4 standing duels, proposed ============ */
+function ladderPhone(n){
+  let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
+  s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(Math.min(n,3))+'</span></div>';
+  const P=[
+    {cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'},
+    {name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'},
+    {name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'},
+    {name:'Ember Warden', status:'the duel is decided', right:'›'}
+  ];
+  for(let i=0;i<n;i++) s+=plaque(Object.assign({top:38.875+i*7.25}, P[i]));
+  const R=[
+    {dot:GREEN, glow:1, name:'Moonlit Hare', sub:'<span class="rr">✦ 1024</span> · online', pill:'DUEL', pillCls:'g'},
+    {dot:'#c9b676', name:'Dawn Scribe', sub:'<span class="rr">✦ 987</span> · last night', pill:'AGAIN', pillCls:'d'},
+    {dot:GOLD, glow:1, name:'Astral Raven', sub:'<span class="rr">✦ 1042</span>', pill:'DUEL', pillCls:'g'}
+  ];
+  if(n<4){
+    const headPct=[48.6,55.9,63.1][n-1], rows=3-(n-1);
+    s+='<div class="ph-strip" style="top:'+headPct+'%">— under this sky tonight —</div>';
+    for(let i=0;i<rows;i++) s+=rrow(Object.assign({top:[49.25,56.5,63.75].slice(3-rows)[i]}, R[i]));
+  }else{
+    s+='<div class="chips-row" style="top:69.4%">'
+      +vchip({notag:1, dot:GREEN, glow:1, name:'Moonlit Hare'})
+      +vchip({notag:1, dot:'#c9b676', name:'Dawn Scribe'})
+      +'<div class="vchip all">› ALL MAGES</div>'
+      +'</div>';
+  }
+  return s+foot(1);
+}
+(function(){
+  const row=document.getElementById('ladrow');
+  const caps=['1 PLAQUE · 3 ROWS','2 PLAQUES · 2 ROWS','3 PLAQUES · 1 ROW','4 PLAQUES · THE FOLD'];
+  for(let n=1;n<=4;n++){
+    const c=document.createElement('div');c.className='ladcell';
+    c.innerHTML='<div class="ladframe"><div class="ladphone">'+ladderPhone(n)+'</div></div><div class="ladcap">'+caps[n-1]+'</div>';
+    row.appendChild(c);
+  }
 })();
 
 /* ============ the language pills (bucket rule, live) ============ */
