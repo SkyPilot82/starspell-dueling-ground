@@ -77,8 +77,8 @@
   .vchip{flex:0 0 31%;background:#141a33;border:1px solid #3a4577;border-radius:99px;display:flex;align-items:center;padding:4px 7px;min-width:0}
   .vchip .dot{flex:0 0 6px;height:6px;border-radius:50%;margin-right:5px}
   .vchip .cn{flex:1;min-width:0}
-  .vchip .nm{font-size:8px;color:#f0e8d2;letter-spacing:.03em;white-space:nowrap;overflow:hidden}
-  .vchip .sb{font-size:6.5px;font-style:italic;color:#5a6390;white-space:nowrap;overflow:hidden}
+  .vchip .nm{font-size:8px;color:#f0e8d2;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:clip}
+  .vchip .sb{font-size:6.5px;font-style:italic;color:#5a6390;white-space:nowrap;overflow:hidden;text-overflow:clip}
   .vchip .tag{flex:0 0 auto;margin-left:4px;border-radius:99px;padding:2px 4px;letter-spacing:.04em}
   .vchip .tag.g{background:linear-gradient(180deg,#ffe9a8,#d7b45c);color:#241c40}
   .vchip .tag.d{background:#0d1228;border:1px solid #3a4577;color:#8a94c4}
@@ -517,8 +517,8 @@ function beforePhone(st){
     let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
     s+='<div class="ph-strip" style="top:39.5%">under this sky tonight</div>';
     s+='<div class="chips-row" style="top:41.6%">'
-      +vchip({dot:GREEN, glow:1, name:'Moonlit H…', sub:'online', tag:'DUEL', tagCls:'g'})
-      +vchip({dot:'#c9b676', name:'Dawn Scr…', sub:'last night', tag:'AGAIN', tagCls:'d'})
+      +vchip({dot:GREEN, glow:1, name:'Moonlit…', sub:'online', tag:'DUEL', tagCls:'g'})
+      +vchip({dot:'#c9b676', name:'Dawn S…', sub:'last night', tag:'AGAIN', tagCls:'d'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
     s+=voidbr(47.5,75.2,'≈282 design pts of dead night');
@@ -533,8 +533,8 @@ function beforePhone(st){
     s+=plaque({top:53.4, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
     s+='<div class="ph-strip" style="top:61.4%">under this sky tonight</div>';
     s+='<div class="chips-row" style="top:63.5%">'
-      +vchip({dot:GREEN, glow:1, name:'Moonlit H…', sub:'online', tag:'DUEL', tagCls:'g'})
-      +vchip({dot:'#c9b676', name:'Dawn Scr…', sub:'last night', tag:'AGAIN', tagCls:'d'})
+      +vchip({dot:GREEN, glow:1, name:'Moonlit…', sub:'online', tag:'DUEL', tagCls:'g'})
+      +vchip({dot:'#c9b676', name:'Dawn S…', sub:'last night', tag:'AGAIN', tagCls:'d'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
     s+=voidbr(69.2,75.2,'≈76 pts');
@@ -549,8 +549,8 @@ function beforePhone(st){
     s+=plaque({top:53.4, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
     s+=plaque({top:60.6, name:'Ember Warden', status:'the duel is decided', right:'›'});
     s+='<div class="chips-row" style="top:69.4%">'
-      +vchip({dot:GREEN, glow:1, name:'Moonlit H…', sub:'online', tag:'DUEL', tagCls:'g'})
-      +vchip({dot:'#c9b676', name:'Dawn Scr…', sub:'last night', tag:'AGAIN', tagCls:'d'})
+      +vchip({dot:GREEN, glow:1, name:'Moonlit…', sub:'online', tag:'DUEL', tagCls:'g'})
+      +vchip({dot:'#c9b676', name:'Dawn S…', sub:'last night', tag:'AGAIN', tagCls:'d'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
     s+=foot(1);
