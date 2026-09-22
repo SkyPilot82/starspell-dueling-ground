@@ -577,7 +577,7 @@ function beforePhone(st){
 }
 function afterPhone(st){
   if(st==='zero'){
-    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1.23});
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1.14});
     s+='<div class="ph-strip" style="top:43.6%;font-size:9.5px">— under this sky tonight —</div>';
     s+=rrow({top:45.1, dot:GREEN, glow:1, name:'Moonlit Hare', sub:'<span class="rr">✦ 1024</span> · online', pill:'DUEL', pillCls:'g'});
     s+=rrow({top:52.35, dot:'#c9b676', name:'Dawn Scribe', sub:'<span class="rr">✦ 987</span> · last night', pill:'AGAIN', pillCls:'d'});
@@ -613,14 +613,14 @@ function afterPhone(st){
     return s+'<div class="mockcap">MOCK · THE FOLD, DETAGGED — THE CHIP IS THE BUTTON</div>';
   }
   if(st==='funnel'){
-    let s=crown({chip:'✧ Wispfall', heroScale:1.33, seed:19});
+    let s=crown({chip:'✧ Wispfall', heroScale:1.26, seed:19});
     s+='<div class="ph-fic" style="top:44.5%">no rivals yet — your first duel<br>writes the first name here</div>';
     s+=door({top:50, l:'CHALLENGE WORLDWIDE', s:'quick match beneath the open sky'});
     s+=door({top:59.5, cls:'dark', l:'ADD A FRIEND BY NAME', s:'seek a mage among the stars'});
     s+=door({top:68.75, cls:'dark', l:'✶ INVITE A NEW FRIEND', s:'a link that brings them into the game'});
     return s+'<div class="mockcap">MOCK · HERO 2.0 · DOORS JOIN THE safeB FAMILY</div>';
   }
-  let s=crown({heroScale:1.33, dim:true, unlit:true, seed:18});
+  let s=crown({heroScale:1.26, dim:true, unlit:true, seed:18});
   s+='<div class="ph-fic" style="top:45.4%;color:#8c5a5a">the wider sky is unreachable —<br>duels need a connection</div>';
   s+=rrow({top:48.4, dot:SLATE, name:'Quiet Owl', sub:'✦ your move', ghost:1});
   s+=rrow({top:55.65, dot:SLATE, name:'Umbral Raven', sub:'Umbral Raven weaves…', ghost:1});
