@@ -20,6 +20,7 @@
   .sub{color:var(--dim);font-style:italic;margin-top:0;max-width:720px}
   .note{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:14px 0;color:var(--dim);font-size:14px}
   .note b{color:var(--ink)}
+  .note.rev{border-color:rgba(232,199,106,.55);box-shadow:0 0 14px rgba(232,199,106,.12)}
   a{color:var(--gold)}
 
   /* ---------- phones ---------- */
@@ -31,7 +32,6 @@
   .lay{position:absolute;inset:0}
   .grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");opacity:.05;pointer-events:none}
   .aur{position:absolute;width:66%;aspect-ratio:1;border-radius:50%;mix-blend-mode:screen;pointer-events:none}
-  .mockcap{position:absolute;left:10px;bottom:6px;font-size:8.5px;letter-spacing:.12em;color:#3f4870;pointer-events:none;z-index:5}
 
   .ph-back{position:absolute;left:6%;top:2.6%;font-size:12px;color:#9fb0e8;letter-spacing:.06em}
   .ph-chip{position:absolute;right:5%;top:2.2%;font-size:9.5px;color:#c9b676;background:#161d38;border:1px solid #3a4577;border-radius:99px;padding:3px 10px;letter-spacing:.06em}
@@ -39,7 +39,7 @@
            background:linear-gradient(180deg,#fff7dc,#ffe08d 45%,#d7b45c 70%,#9c7a28);-webkit-background-clip:text;background-clip:text;color:transparent;
            text-shadow:0 0 18px rgba(232,199,106,.3)}
   .ph-word svg{vertical-align:-2px}
-  .ph-cap{position:absolute;left:0;right:0;top:10.6%;text-align:center;font-size:9px;font-style:italic;color:#c9b676;letter-spacing:.05em}
+  .ph-cap{position:absolute;left:0;right:0;top:12.3%;text-align:center;font-size:9px;font-style:italic;color:#c9b676;letter-spacing:.05em}
   .ph-band{position:absolute;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.18em;color:#c9b676}
   .ph-band .pips{display:inline-flex;gap:4px;margin-left:8px;vertical-align:1px}
   .ph-band .pip{width:4.5px;height:4.5px;border-radius:50%}
@@ -73,6 +73,9 @@
   .rpill.g{background:linear-gradient(180deg,#ffe9a8,#d7b45c);color:#241c40}
   .rpill.d{background:#0d1228;border:1px solid #3a4577;color:#9fb0e8}
   .rrow.ghost{opacity:.55}
+  /* kill the body-font strut inside name+sub stacks — each span sets its own
+     size; without this the 15px base inflates every two-line column to 46px */
+  .rrow .rt,.vchip .cn,.srow .st,.plaq .pl-t,.bigrow .bt{font-size:9px;line-height:1.3}
 
   .chips-row{position:absolute;left:5%;right:5%;display:flex;gap:2.5%;justify-content:center}
   .vchip{flex:0 0 31%;background:#141a33;border:1px solid #3a4577;border-radius:99px;display:flex;align-items:center;padding:4px 7px;min-width:0}
@@ -145,6 +148,7 @@
 
   /* sheet mocks */
   .sheetrow{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+  .sheetrow>div{width:min(320px,100%)} /* never squeeze below the drawn width — the %-pitched rows depend on it */
   .sheet{width:min(320px,100%);background:#10142c;border:1.5px solid #3a4577;border-radius:16px;position:relative;overflow:hidden}
   .sheet .sh-h{position:absolute;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.16em;color:#c9b676}
   .sheet .sh-x{position:absolute;right:7%;font-size:11px;color:#8a94c4}
@@ -182,7 +186,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="crumb">STARSPELL · DESIGN REVIEW · 2026-09-22 · ROUND TWO ON THE VERSUS PAGE</div>
+  <div class="crumb">STARSPELL · DESIGN REVIEW · 2026-09-22 · ROUND TWO ON THE VERSUS PAGE · REVISED THE SAME NIGHT</div>
   <h1>THE DUELING GROUND, FILLED</h1>
   <p class="sub">The 9/9 <a href="https://skypilot82.github.io/starspell-under-one-sky/">UNDER ONE SKY</a> round built
   this page its world; this round makes the middle <b style="color:var(--ink)">earn its ground</b>. One move does most
@@ -195,8 +199,23 @@
   there&rsquo;s too much dead space in the middle of the screen. The mages you can replay are way too small. Their
   names are being cut off. The Again button is being cut off as well. We need to fill that space up and make it look
   better. Right now it&rsquo;s just too much dead space in the middle of the screen.&rdquo;</i><br><br>
-  <b>How to rule:</b> tap the state tabs to walk every state before/after, then answer the four numbered questions at
-  the foot — chips + notes, COPY VERDICTS in the bottom bar, paste back to the console. <b>Nothing here is built.</b></div>
+  <b>How to rule:</b> tap the state tabs, then answer the four questions at the foot — COPY VERDICTS builds the
+  paste-back block. <b>Nothing here is built.</b></div>
+
+  <div class="note rev"><b>REVISED, SAME NIGHT — Wyatt&rsquo;s notes (relayed via Skylar&rsquo;s console), 9/22
+  late, verbatim:</b> <i>&ldquo;They&rsquo;re good but specifically you can see where text gets are too
+  tight/overlapped and text that need more buffer padding from lines &mdash;I feel like it&rsquo;s a little
+  overwhelming with how much text is on the screen too. &mdash;I don&rsquo;t think it needs to tell you how many
+  victories you have on the bottom &mdash;I don&rsquo;t think it should have all the text on the bottom (&ldquo;Mock,
+  Shipped strings, ect) &mdash;Under Challenge a Friend you don&rsquo;t need to have a subline. &mdash;Under
+  Challenge World Worldwide you don&rsquo;t need to have a subline.&rdquo;</i><br><br>
+  <b>What this revision does:</b> <b>THE AIR LAW</b> enters §VI (minimum buffer between text and any line — and the
+  tight seats it cures are real: the live page&rsquo;s own band head and fold chips ride <i>into</i> the plaques,
+  measured in §I) · the <b>✦-victories whisper dies</b> · <b>every door drops its subline</b> — the two gold doors
+  by Wyatt&rsquo;s word, the dark doors and the sheet&rsquo;s invite plate by the same law · the <b>mock caption
+  labels are gone</b> from the frames · row subs turn <b>presence-only</b> and §V&rsquo;s texture question is
+  reshaped around the quieter direction (Q3 — the ★ moves) · the offline ghost line and the header caption are cut
+  or demoted (§VI law 13 carries the full list as build rulings). The original round stands in git history.</div>
 
   <h2>I · THE COMPLAINT, MEASURED</h2>
   <div class="note">Measured against <b>versus.js at v0.103.0 HEAD</b> (the layout is byte-identical to the v0.102.0
@@ -220,8 +239,24 @@
   <div class="note">Both of Skylar&rsquo;s sentences are one defect: <b>the people worth re-fighting were given the
   smallest furniture on the page</b>, while the ground that could seat them full-size sits empty right above the
   doors. The fix is the same move in both directions — promote the people into the space.</div>
+  <div class="note"><b>And Wyatt&rsquo;s padding note has a measured live root</b> — these seats are tight in
+  versus.js today, not just in the mocks:
+  <ul class="lawlist">
+    <li><b>The band head rides into the first plaque.</b> — STANDING DUELS — sits at y306; its text bottom (~313)
+    crosses the first plaque&rsquo;s top edge (336−25 = <b>311</b>). An overlap, on the live page, tonight.</li>
+    <li><b>The fold&rsquo;s chips ride into the fourth plaque.</b> At four plaques the strip seats at 549: chip top
+    531 vs plaque bottom <b>535</b> — 4 pts inside it.</li>
+    <li><b>The strip head clears its own chips by ~2 pts</b> (head bottom ~322, chip top 324).</li>
+    <li><b>The whisper sat 9 pts under the second door</b> (door bottom safeB−60, whisper top ~safeB−51) — retired
+    now by Wyatt&rsquo;s word, which is also the cure.</li>
+  </ul>
+  The doors themselves clear each other by exactly 8 (tops safeB−188/−120, 60 tall) — legal under the law below.
+  THE AIR LAW (§VI, law 12) names the minimum buffers and the cures; the PROPOSED column obeys it everywhere, and
+  the TODAY column reproduces the tight seats as they live.</div>
 
   <h2>II · THE FILLED GROUND — EVERY STATE, BEFORE AND AFTER</h2>
+  <p class="sub">The TODAY column reproduces the live page&rsquo;s own seats, tight ones included — that tightness
+  is part of the complaint (§I). The PROPOSED column obeys THE AIR LAW everywhere.</p>
   <div class="statetabs" id="statetabs"></div>
   <p class="swipehint">← swipe — TODAY left, PROPOSED right →</p>
   <div class="stage">
@@ -239,17 +274,21 @@
   <div class="note" style="margin-top:20px"><b>The fill law, once</b> (what the build implements):
   <ul class="lawlist">
     <li><b>Plaques first.</b> Standing duels keep the band head, the five cap pips and the shipped fold (&gt;4 → 3 +
-    &ldquo;+%1 more&rdquo;). Nothing about the duel ledger moves.</li>
+    &ldquo;+%1 more&rdquo;). One air-law move only: the plaques drop 14 (336 → <b>350</b>, pitch 58 kept) so the
+    band head finally clears the first plaque — today its text rides into the plaque&rsquo;s top edge (§I).</li>
     <li><b>Replay rows fill the rest.</b> Beneath the plaques (or alone at zero duels, under the shipped
     &ldquo;under this sky tonight&rdquo; head), full 344×50 rows drawn from the strip&rsquo;s own ranked picks —
     friends online → recent rivals → mages of the circle — <b>as many as the ground grants</b>: rows keep coming while
-    the next row&rsquo;s bottom stays ≥24 pts above the doors&rsquo; top edge (safeB−188). Max five. On a box-exact
-    phone that is 4 rows at zero duels, 1 at three plaques; a tall phone earns one more instead of more void.
-    The picks list is still <b>ranked once per page open and frozen</b> — geometry only chooses how many show.</li>
+    the next row&rsquo;s bottom stays ≥24 pts above the doors&rsquo; top edge (safeB−188). Max five. At zero duels the
+    &ldquo;under this sky tonight&rdquo; head takes y330 and rows fall at 374 + 58·i; in mixed states the head sits 12
+    pts under the last plaque, rows 12 under the head. On a box-exact phone that is 4 rows at zero duels, 1 at three
+    plaques; a tall phone earns one more instead of more void. The picks list is still <b>ranked once per page open
+    and frozen</b> — geometry only chooses how many show.</li>
     <li><b>The strip becomes the fold.</b> At four plaques the rows compress into today&rsquo;s pill strip — with the
     tags removed: a pill whose verb must live at 5.5 pt should not carry a verb. The chip itself is the button (it
     already is); the labeled AGAIN lives on the rows. Fold pills spend the freed width on the <b>name at a fixed
-    10 pt</b>.</li>
+    10 pt</b>. And the fold seats by the air law — chips center at the last plaque&rsquo;s bottom + 32: today&rsquo;s
+    fold rides 4 pts <i>into</i> the fourth plaque (§I); it stops.</li>
     <li><b>The hero owns the crown slack.</b> The Duelists flex: <b>1.5×</b> with plaques standing · <b>1.85×</b> at
     zero plaques · <b>2.0×</b> on the funnel and offline pages — the zenith star and the fly-in anchor ride the
     scale; the sky rig itself is untouched.</li>
@@ -265,14 +304,14 @@
   <div class="anat">
     <div class="bigrow">
       <span class="dot"></span>
-      <span class="bt"><span class="bn">Moonlit Hare</span><br><span class="bs"><span class="rr">✦ 1024</span> · last night</span></span>
+      <span class="bt"><span class="bn">Moonlit Hare</span><br><span class="bs">last night</span></span>
       <span class="bp">AGAIN</span>
     </div>
     <div class="callout">
       <span><b>row</b> 344×50, pitch 58 — the plaque&rsquo;s twin</span>
       <span><b>presence dot</b> r 4.5 — green pulse / amber busy / gold glint (circle) / slate</span>
       <span><b>name</b> fixed 13 pt · ellipsis at 168 units — <i>no font shrink, ever</i></span>
-      <span><b>sub</b> fixed 9.5 pt · rating + night-clock / presence word</span>
+      <span><b>sub</b> fixed 9.5 pt · presence word / night-clock alone — a circle row carries no sub (ratings only if Q3 turns)</span>
       <span><b>pill</b> fixed 10 pt · width = its word (10-unit buckets, 76–128) · gold = starts now, dark = summons waits</span>
       <span><b>tap</b> whole row + pill, 44-pt zones</span>
     </div>
@@ -333,19 +372,22 @@
   </div>
   <div class="note">The regrown sheet: panel 380 → <b>448</b> tall (still well inside the design box), row pitch
   32 → <b>38</b>, names at fixed 13 pt with the bucket pill — and the freed height seats a <b>fourth recent
-  rival</b>. The friends rows, the +, the ✕ and the pinned invite keep their seats and their manners.</div>
+  rival</b>. The friends rows, the +, the ✕ and the pinned invite keep their seats and their manners — and the
+  invite plate drops its subline (the door law: a label alone). Subs stay presence-only unless Q3 turns.</div>
 
-  <h2>V · TEXTURE — WHAT MAKES A ROW A PERSON <span style="font-size:13px;color:var(--dim)">(question 3)</span></h2>
-  <div class="note">A full-size row has room the pills never had. Two textures, both from data the game already
-  holds, <b>zero new synced data</b>:<br><br>
-  <b>The rating.</b> Sub-line leads with the mage&rsquo;s tier glyph + rating — <span style="color:#cfd8ff">✦ 1024</span> ·
-  last night. Humans: one registry read per row, ≤5 per page open, cached for the visit, the row dressing itself in
-  place when the number lands (the redress law — nothing reorders). Circle mages: the rival engine already keeps
-  their Elo. Stakes make a rematch worth wanting — &ldquo;can I take 1210?&rdquo; is a story; a bare name is not.<br><br>
-  <b>The last word (the flourish).</b> Where the ledger already holds it — near-duel notes carry the rival&rsquo;s
-  <code>lastWord</code> — the sub may whisper it instead of silence: <i>&ldquo;their last word: EMBER&rdquo;</i>.
-  Local-only, spotty by nature (live-sky duels don&rsquo;t note it today), so it is offered as the garnish, never the
-  spine.</div>
+  <h2>V · TEXTURE — REWORKED ON WYATT&rsquo;S NOTES <span style="font-size:13px;color:var(--dim)">(question 3)</span></h2>
+  <div class="note">The original round argued for <i>adding</i> a line of texture to every row — rating first, an
+  optional last-word whisper. <b>Wyatt&rsquo;s 9/22 direction runs the other way</b> (&ldquo;overwhelming with how
+  much text&rdquo;), so the recommendation flips: <b>the quiet lane — presence only.</b> The sub carries exactly the
+  strip&rsquo;s own words today: <i>online</i> for a friend, the night-clock for a rival, <b>nothing at all for a
+  circle mage</b> (their sub is empty by the shipped fiction, and an empty line is air, not a hole). The mocks above
+  now show this lane.<br><br>
+  The ratings texture stays on the table as Q3&rsquo;s open alternative, mechanics unchanged from the round:
+  <span style="color:#cfd8ff">✦ 1024</span> · last night — ≤5 registry reads per page open, cached for the visit,
+  rows dressing in place when the number lands (the redress law); circle ratings from the rival engine&rsquo;s own
+  Elo; the last-word garnish only where a near-duel note already holds it. <b>Zero new synced data</b> either way —
+  but if PRESENCE ONLY rules, slice F below never fires at all. Skylar rules; the question stands reshaped, not
+  removed.</div>
 
   <h2>VI · THE LAWS THE BUILD INHERITS</h2>
   <div class="note"><ol class="lawlist">
@@ -371,10 +413,26 @@
     <li><b>Record shapes kept.</b> pendRows verbatim; the new rosterRows records ship for the suites the way
     chipRows do; vsGameRows() untouched.</li>
     <li><b>The U+2694 grep gate stands.</b> Zero new strings ×5 — every word on the filled page already ships
-    (vsTonight, vsAgain, vsDuelTag, the presence words, the night-clock, vsGhost). No new art files.</li>
+    (vsTonight, vsAgain, vsDuelTag, the presence words, the night-clock). No new art files. And the revision only
+    <i>removes</i> words: six shipped lines stop rendering (law 13) with strings.js bytes untouched.</li>
     <li><b>Out of scope, named:</b> the HOME meadow duel strip (game.js ~6150–6239) is a different surface and does
     not move. Card 03 (the in-battle duel column) is independent — a plaque&rsquo;s › still enters vsbattle, and any
     battle doorway this design implies assumes card 03&rsquo;s bigger-health-bar language once it lands.</li>
+    <li><b>THE AIR LAW (new — Wyatt&rsquo;s 9/22 note: text needs buffer from lines).</b> In design pts: <b>bare
+    text</b> (heads, fictions, captions, whispers) keeps <b>≥12</b> to any furniture edge, rule, or neighboring
+    text · <b>furniture</b> (plaques, rows, chips, doors, pills) keeps <b>≥8</b> to furniture · text inside a panel
+    keeps <b>≥6</b> to its box · <b>nothing ever touches or crosses a line.</b> The transient noteT is exempt while
+    it passes (it steps in front and steps away). The cures this design already seats: plaques 336 → 350 · the fold
+    chips at last-plaque-bottom + 32 · the zero-duels head at y330 with rows from 374 · the whisper retired outright
+    (law 13) — and the strip-head-over-chips squeeze dies with the strip itself. The doors&rsquo; own 8-pt gap
+    (tops safeB−188/−120, 60 tall) already passes. The build&rsquo;s harness measures the law on every state.</li>
+    <li><b>THE QUIET GROUND (Wyatt&rsquo;s 9/22 cuts — build rulings, all render-only; strings.js bytes untouched,
+    the keys simply go unread).</b> These stop rendering: the <b>✦-victories whisper</b> (vsVict; noteT keeps the
+    safeB−44 seat for transient notes) · the gold doors&rsquo; sublines (<b>vsChFriendSub, vsChWorldSub</b> —
+    Wyatt&rsquo;s word) · the dark doors&rsquo; sublines (<b>vsAddFriendSub, vsInviteNewSub</b>, the sheet&rsquo;s
+    invite plate included — the same law: <b>a door carries its label alone</b>, centered, geometry unchanged) ·
+    the offline ghost line (<b>vsGhost</b> — the dimmed rows speak for themselves). <b>vsAsync</b> survives on the
+    funnel alone, where it teaches. Row subs carry presence only unless Q3 rules for ratings.</li>
   </ol></div>
 
   <h2>VII · BUILD COST, HONESTLY — AND THE ORDER</h2>
@@ -385,13 +443,14 @@
     <tr><td><b>C · the hero flex</b></td><td>three scales (1.5/1.85/2.0), zenith + fly-in anchors ride, reduced-motion honored</td><td><span class="sz S">S</span></td></tr>
     <tr><td><b>D · funnel + offline respace</b></td><td>safeB-anchored funnel doors + retry, ghost rows, fiction reseats under the 2.0 hero</td><td><span class="sz S">S</span></td></tr>
     <tr><td><b>E · the sheet regrown</b></td><td>panel 448, pitch 38, fourth recent, shared row anatomy</td><td><span class="sz S">S</span></td></tr>
-    <tr><td><b>F · the texture</b> <i style="color:var(--dim)">(gated on Q3)</i></td><td>ratings on rows (registry reads ≤5/open, cached, redress-in-place; circle Elo from the engine) · last-word garnish where held</td><td><span class="sz M">M</span></td></tr>
+    <tr><td><b>F · the texture</b> <i style="color:var(--dim)">(gated on Q3 — the revision&rsquo;s lane is presence-only; F fires only if RATINGS rules)</i></td><td>ratings on rows (registry reads ≤5/open, cached, redress-in-place; circle Elo from the engine) · last-word garnish where held</td><td><span class="sz M">M</span></td></tr>
     <tr><td><b>G · the harness</b></td><td>vspage re-aims (strip refs → row refs), fill-geometry pins ×5 states, truncation pins ×5 languages, fold-detag pin, funnel/offline anchor pins — rides the build card, ×3 green on final bytes</td><td><span class="sz M">M</span></td></tr>
   </table></div>
   <div class="note"><b>Suggested order:</b> one build card carries <b>A → B → C → D → E</b> (B is A&rsquo;s own law;
-  C/D/E are geometry riding the same rebuild), with G alongside — versus.js + tools only, <b>zero strings.js bytes,
-  zero game.js bytes</b>, roughly two dev-days. <b>F is its own card</b>, fired only if Q3 says so — it is the one
-  slice that adds reads. Per the queue law, nothing fires until the verdicts land and Skylar says go.</div>
+  C/D/E are geometry riding the same rebuild; <b>the air law and the quiet-ground cuts ride A for free</b> — they
+  are seat numbers and deleted draw calls), with G alongside — versus.js + tools only, <b>zero strings.js bytes,
+  zero game.js bytes</b>, roughly two dev-days. <b>F is its own card</b>, fired only if Q3 rules for ratings — it is
+  the one slice that adds reads. Per the queue law, nothing fires until the verdicts land and Skylar says go.</div>
 
   <h2>FOR SKYLAR — ANSWER BY NUMBER</h2>
   <div id="qs"></div>
@@ -402,12 +461,15 @@
   nine-slice / plaque systems, reused verbatim in the mocks · strings.js ×5 for every word shown · prior rounds:
   <a href="https://skypilot82.github.io/starspell-under-one-sky/">under one sky (9/9)</a> ·
   <a href="https://skypilot82.github.io/starspell-turning-sky/">the turning sky</a>. Mock names are circle-minter
-  names; every string on the mocks ships today.</div>
+  names; every string on the mocks ships today.<br><br>
+  <b>Revised 2026-09-22, late,</b> on Wyatt&rsquo;s notes relayed via Skylar&rsquo;s console (quoted in full at the
+  top): the air law, the quiet-ground cuts, Q3 reshaped toward presence-only, the frames&rsquo; mock labels removed.
+  Verdicts already clicked on this device carry over (Q3&rsquo;s renamed chips migrate). The original round stands
+  in git history.</div>
 </div>
 
 <div class="bar">
   <span class="cnt"><b id="ruled">0</b> / 4 ruled</span>
-  <span class="barnote">chips + notes save on this device; COPY VERDICTS builds the paste-back block</span>
   <button class="copy" onclick="copyVerdicts()">COPY VERDICTS</button>
   <span class="copied" id="copied"></span>
 </div>
@@ -509,68 +571,74 @@ function worldBG(o){
 
 /* ============ the phones — five states, before and after ============ */
 const wordmark = blades(18,.95)+'<span style="margin:0 8px">VERSUS</span>'+blades(18,.95);
-function crown(o){ /* {chip, heroScale, dim, flare, unlit, seed} */
+function crown(o){ /* {chip, heroScale, dim, flare, unlit, seed, nocap} */
   let s=worldBG({seed:o.seed||17, dim:o.dim});
   s+='<div class="grain"></div>';
   s+='<div class="ph-back">‹ HOME</div>';
   if(o.chip) s+='<div class="ph-chip">'+o.chip+'</div>';
   s+='<div class="ph-word">'+wordmark+'</div>';
-  s+='<div class="ph-cap">turn-based duels · cast in your own time</div>';
+  if(!o.nocap) s+='<div class="ph-cap">turn-based duels · cast in your own time</div>';
   const sc=o.heroScale||1;
   s+='<div class="lay" style="top:13.5%;height:24%;pointer-events:none;transform:scale('+sc+');transform-origin:50% 12%">'
     +duelists({dim:o.dim, flare:o.flare, unlit:o.unlit})+'</div>';
   return s;
 }
 const GOLD='#ffd77a', GREEN='#7fe0a0', SLATE='#39406b';
-function foot(withWhisper){
+function foot(withWhisper){ /* TODAY's foot — sublines + whisper as they live */
   let s=door({top:76.5, l:'CHALLENGE A FRIEND', s:'your friends and recent rivals await'})
        +door({top:85, l:'CHALLENGE WORLDWIDE', s:'quick match beneath the open sky'});
   if(withWhisper) s+='<div class="ph-note" style="top:93.6%;font-size:8.5px">✦ 12 versus victories</div>';
   return s;
 }
+function footAfter(){ /* the revised foot — labels alone, no whisper (Wyatt's cuts) */
+  return door({top:76.5, l:'CHALLENGE A FRIEND'})
+       + door({top:85, l:'CHALLENGE WORLDWIDE'});
+}
 function beforePhone(st){
+  /* live seats, honestly — the tight ones included (§I): band head 306 into
+     plaque top 311, strip head ~2 over its chips, fold chips 4 into plaque 4 */
   if(st==='zero'){
     let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
-    s+='<div class="ph-strip" style="top:39.5%">under this sky tonight</div>';
-    s+='<div class="chips-row" style="top:41.6%">'
+    s+='<div class="ph-strip" style="top:38.7%">under this sky tonight</div>';
+    s+='<div class="chips-row" style="top:40.5%">'
       +vchip({dot:GREEN, glow:1, name:'Moonlit…', sub:'online', tag:'DUEL', tagCls:'g'})
       +vchip({dot:'#c9b676', name:'Dawn S…', sub:'last night', tag:'AGAIN', tagCls:'d'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
-    s+=voidbr(47.5,75.2,'≈282 design pts of dead night');
+    s+=voidbr(46,75.2,'≈252 pts of dead night — more on tall phones');
     s+=foot(1);
-    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+    return s;
   }
   if(st==='mid'){
     let s=crown({chip:'✦ Wispfall · 1024', heroScale:1, flare:true});
-    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(2)+'</span></div>';
+    s+='<div class="ph-band" style="top:37.4%">— STANDING DUELS —<span class="pips">'+pips(2)+'</span></div>';
     s+=plaque({top:38.9, cls:'sum', name:'Silver Weaver', status:'challenges you — the seal is set', accept:1});
     s+=plaque({top:46.1, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
     s+=plaque({top:53.4, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
-    s+='<div class="ph-strip" style="top:61.4%">under this sky tonight</div>';
-    s+='<div class="chips-row" style="top:63.5%">'
+    s+='<div class="ph-strip" style="top:60.6%">under this sky tonight</div>';
+    s+='<div class="chips-row" style="top:62.4%">'
       +vchip({dot:GREEN, glow:1, name:'Moonlit…', sub:'online', tag:'DUEL', tagCls:'g'})
       +vchip({dot:'#c9b676', name:'Dawn S…', sub:'last night', tag:'AGAIN', tagCls:'d'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
-    s+=voidbr(69.2,75.2,'≈76 pts');
+    s+=voidbr(67,75.2,'≈76 pts');
     s+=foot(1);
-    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+    return s;
   }
   if(st==='fold'){
     let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
-    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(3)+'</span></div>';
+    s+='<div class="ph-band" style="top:37.4%">— STANDING DUELS —<span class="pips">'+pips(3)+'</span></div>';
     s+=plaque({top:38.9, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
     s+=plaque({top:46.1, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
     s+=plaque({top:53.4, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
     s+=plaque({top:60.6, name:'Ember Warden', status:'the duel is decided', right:'›'});
-    s+='<div class="chips-row" style="top:69.4%">'
+    s+='<div class="chips-row" style="top:66.4%">'
       +vchip({dot:GREEN, glow:1, name:'Moonlit…', sub:'online', tag:'DUEL', tagCls:'g'})
       +vchip({dot:'#c9b676', name:'Dawn S…', sub:'last night', tag:'AGAIN', tagCls:'d'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
     s+=foot(1);
-    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+    return s;
   }
   if(st==='funnel'){
     let s=crown({chip:'✧ Wispfall', heroScale:1, seed:19});
@@ -579,7 +647,7 @@ function beforePhone(st){
     s+=door({top:57.5, cls:'dark', l:'ADD A FRIEND BY NAME', s:'seek a mage among the stars'});
     s+=door({top:66.75, cls:'dark', l:'✶ INVITE A NEW FRIEND', s:'a link that brings them into the game'});
     s+=voidbr(75.5,92.5,'fixed-y doors — a tall phone opens a foot gap');
-    return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+    return s;
   }
   /* offline */
   let s=crown({heroScale:1, dim:true, unlit:true, seed:18});
@@ -588,71 +656,73 @@ function beforePhone(st){
   s+='<div class="ph-fic" style="top:53%;font-size:7.5px">their stars return with the connection</div>';
   s+=door({top:58.6, cls:'dark', l:'TRY THE SKY AGAIN'});
   s+=voidbr(67,92.5,'≈230 pts to the foot');
-  return s+'<div class="mockcap">MOCK OF v0.103.0 · MEASURED FROM versus.js</div>';
+  return s;
 }
 function afterPhone(st){
+  /* the revised design: presence-only subs (Q3's quiet lane), label-alone
+     doors, no whisper, the caption only where it teaches (funnel) — and
+     every seat obeying THE AIR LAW (§VI law 12) */
   if(st==='zero'){
-    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1.14});
-    s+='<div class="ph-strip" style="top:43.6%;font-size:9.5px">— under this sky tonight —</div>';
-    s+=rrow({top:45.1, dot:GREEN, glow:1, name:'Moonlit Hare', sub:'<span class="rr">✦ 1024</span> · online', pill:'DUEL', pillCls:'g'});
-    s+=rrow({top:52.35, dot:'#c9b676', name:'Dawn Scribe', sub:'<span class="rr">✦ 987</span> · last night', pill:'AGAIN', pillCls:'d'});
-    s+=rrow({top:59.6, dot:GOLD, glow:1, name:'Astral Raven', sub:'<span class="rr">✦ 1042</span>', pill:'DUEL', pillCls:'g'});
-    s+=rrow({top:66.85, dot:GOLD, glow:1, name:'Keeper of the Ninth Star', sub:'<span class="rr">✧ 812</span>', pill:'DUEL', pillCls:'g'});
-    s+=foot(1);
-    return s+'<div class="mockcap">MOCK · SHIPPED STRINGS · ZERO NEW DATA (RATINGS = Q3)</div>';
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1.14, nocap:1});
+    s+='<div class="ph-strip" style="top:39.9%;font-size:9.5px">under this sky tonight</div>';
+    s+=rrow({top:43.6, dot:GREEN, glow:1, name:'Moonlit Hare', sub:'online', pill:'DUEL', pillCls:'g'});
+    s+=rrow({top:50.9, dot:'#c9b676', name:'Dawn Scribe', sub:'last night', pill:'AGAIN', pillCls:'d'});
+    s+=rrow({top:58.1, dot:GOLD, glow:1, name:'Astral Raven', pill:'DUEL', pillCls:'g'});
+    s+=rrow({top:65.4, dot:GOLD, glow:1, name:'Keeper of the Ninth Star', pill:'DUEL', pillCls:'g'});
+    s+=footAfter();
+    return s;
   }
   if(st==='mid'){
-    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1, flare:true});
-    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(2)+'</span></div>';
-    s+=plaque({top:38.9, cls:'sum', name:'Silver Weaver', status:'challenges you — the seal is set', accept:1});
-    s+=plaque({top:46.1, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
-    s+=plaque({top:53.4, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
-    s+='<div class="ph-strip" style="top:62.1%">— under this sky tonight —</div>';
-    s+=rrow({top:63.75, dot:GREEN, glow:1, name:'Moonlit Hare', sub:'<span class="rr">✦ 1024</span> · online', pill:'DUEL', pillCls:'g'});
-    s+=foot(1);
-    return s+'<div class="mockcap">MOCK · THE SUMMONS PLATE + ZENITH FLARE AS SHIPPED</div>';
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1, flare:true, nocap:1});
+    s+='<div class="ph-band" style="top:37%">— STANDING DUELS —<span class="pips">'+pips(2)+'</span></div>';
+    s+=plaque({top:40.6, cls:'sum', name:'Silver Weaver', status:'challenges you — the seal is set', accept:1});
+    s+=plaque({top:47.9, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
+    s+=plaque({top:55.1, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
+    s+='<div class="ph-strip" style="top:62.35%;font-size:9.5px">under this sky tonight</div>';
+    s+=rrow({top:66, dot:GREEN, glow:1, name:'Moonlit Hare', sub:'online', pill:'DUEL', pillCls:'g'});
+    s+=footAfter();
+    return s;
   }
   if(st==='fold'){
-    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
-    s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(3)+'</span></div>';
-    s+=plaque({top:38.9, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
-    s+=plaque({top:46.1, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
-    s+=plaque({top:53.4, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
-    s+=plaque({top:60.6, name:'Ember Warden', status:'the duel is decided', right:'›'});
-    s+='<div class="chips-row" style="top:69.4%">'
+    let s=crown({chip:'✦ Wispfall · 1024', heroScale:1, nocap:1});
+    s+='<div class="ph-band" style="top:37%">— STANDING DUELS —<span class="pips">'+pips(3)+'</span></div>';
+    s+=plaque({top:40.6, cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'});
+    s+=plaque({top:47.9, name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'});
+    s+=plaque({top:55.1, name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'});
+    s+=plaque({top:62.4, name:'Ember Warden', status:'the duel is decided', right:'›'});
+    s+='<div class="chips-row" style="top:69.9%">'
       +vchip({notag:1, dot:GREEN, glow:1, name:'Moonlit Hare'})
       +vchip({notag:1, dot:'#c9b676', name:'Dawn Scribe'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
-    s+=foot(1);
-    return s+'<div class="mockcap">MOCK · THE FOLD, DETAGGED — THE CHIP IS THE BUTTON</div>';
+    s+=footAfter();
+    return s;
   }
   if(st==='funnel'){
     let s=crown({chip:'✧ Wispfall', heroScale:1.26, seed:19});
     s+='<div class="ph-fic" style="top:44.5%">no rivals yet — your first duel<br>writes the first name here</div>';
-    s+=door({top:50, l:'CHALLENGE WORLDWIDE', s:'quick match beneath the open sky'});
-    s+=door({top:59.5, cls:'dark', l:'ADD A FRIEND BY NAME', s:'seek a mage among the stars'});
-    s+=door({top:68.75, cls:'dark', l:'✶ INVITE A NEW FRIEND', s:'a link that brings them into the game'});
-    return s+'<div class="mockcap">MOCK · HERO 2.0 · DOORS JOIN THE safeB FAMILY</div>';
+    s+=door({top:51.6, l:'CHALLENGE WORLDWIDE'});
+    s+=door({top:61.1, cls:'dark', l:'ADD A FRIEND BY NAME'});
+    s+=door({top:70.4, cls:'dark', l:'✶ INVITE A NEW FRIEND'});
+    return s;
   }
-  let s=crown({heroScale:1.26, dim:true, unlit:true, seed:18});
+  let s=crown({heroScale:1.26, dim:true, unlit:true, seed:18, nocap:1});
   s+='<div class="ph-fic" style="top:45.4%;color:#8c5a5a">the wider sky is unreachable —<br>duels need a connection</div>';
-  s+=rrow({top:48.4, dot:SLATE, name:'Quiet Owl', sub:'✦ your move', ghost:1});
-  s+=rrow({top:55.65, dot:SLATE, name:'Umbral Raven', sub:'Umbral Raven weaves…', ghost:1});
-  s+='<div class="ph-fic" style="top:64.75%;font-size:8px">their stars return with the connection</div>';
-  s+=door({top:74.1, cls:'dark', l:'TRY THE SKY AGAIN'});
-  return s+'<div class="mockcap">MOCK · THE GHOST LEDGER AS ROWS · RETRY ANCHORED</div>';
+  s+=rrow({top:52.3, dot:SLATE, name:'Quiet Owl', sub:'✦ your move', ghost:1});
+  s+=rrow({top:59.55, dot:SLATE, name:'Umbral Raven', sub:'Umbral Raven weaves…', ghost:1});
+  s+=door({top:76.5, cls:'dark', l:'TRY THE SKY AGAIN'});
+  return s;
 }
 
 const STATES=[
  {k:'zero', t:'ZERO DUELS', n:'ZERO DUELS — THE WORST VOID DIES',
-  c:'<b>The state Skylar is describing.</b> Today: two clipped pills, then ≈282 points of bare night before the doors. Proposed: the Duelists breathe up to 1.85×, and the people worth re-fighting take the ground as full rows — a friend online, a rival with the night-clock, two mages of the circle glinting ready (dressed exactly like the humans; the fiction holds). Four rows on a box-exact phone, five on a tall one — the fill law reads safeB, so bigger screens get more people, not more void. Every word is a shipped string.'},
+  c:'<b>The state Skylar is describing.</b> Today: two clipped pills, then ≈252 points of bare night before the doors. Proposed: the Duelists breathe up to 1.85×, and the people worth re-fighting take the ground as full rows — a friend online, a rival with the night-clock, two mages of the circle glinting ready (dressed exactly like the humans; the fiction holds). Four rows on a box-exact phone, five on a tall one — the fill law reads safeB, so bigger screens get more people, not more void. And the page quiets (Wyatt&rsquo;s notes): subs carry presence alone, the doors their labels alone, and the victories whisper is gone. Every word is a shipped string.'},
  {k:'mid', t:'MID-DUELS', n:'MID-DUELS — BUSINESS FIRST, PEOPLE AFTER',
   c:'<b>A summons plate + two duels standing.</b> The plaque band is untouched — gold ACCEPT plate, breathing your-move rim, cap pips, the zenith star flaring for the summons. The change is beneath: the leftover ground seats exactly as many replay rows as fit (here, one — Moonlit Hare at full size with a legible DUEL pill) instead of two clipped pills over a 76-point gap.'},
  {k:'fold', t:'FULL FOLD', n:'FOUR PLAQUES — THE FOLD, DETAGGED',
   c:'<b>The busy page was never the problem — so it barely changes.</b> At four plaques the rows compress into today&rsquo;s pill strip, minus the tags: a verb that must live at 5.5&nbsp;pt should not exist, and the chip was always the button anyway. The freed width goes to the name at a fixed 10&nbsp;pt — &ldquo;Moonlit Hare&rdquo; whole instead of &ldquo;Moonlit H…&rdquo; with an unreadable AGAIN beside it. The labeled AGAIN lives on the rows and in the sheet.'},
  {k:'funnel', t:'FUNNEL', n:'FIRST VISIT — THE CROWN GROWS, THE DOORS ANCHOR',
-  c:'<b>A fresh device knows nobody, and the page must not invent acquaintances</b> — so the funnel keeps its honest three doors and gains two things: the Duelists at 2.0× (the sky owns the crown), and safeB anchoring for the doors, which today sit at fixed y and open a foot gap on tall phones. No people are minted for a player who has not yet met the circle.'},
+  c:'<b>A fresh device knows nobody, and the page must not invent acquaintances</b> — so the funnel keeps its honest three doors and gains two things: the Duelists at 2.0× (the sky owns the crown), and safeB anchoring for the doors, which today sit at fixed y and open a foot gap on tall phones. The doors carry their labels alone now — and this is the one state that keeps the header caption, the line that teaches what a duel is. No people are minted for a player who has not yet met the circle.'},
  {k:'offline', t:'OFFLINE', n:'OFFLINE — THE GHOSTS GET THEIR ROWS',
   c:'<b>Still a place, now a furnished one.</b> The dimmed Duelists grow to 2.0×, and the ghost ledger — today a single joined line of names — becomes dimmed rows in the same anatomy: slate dot, full-size name, the duel&rsquo;s own status fiction as the sub, no pills (nothing is tappable without a sky). TRY THE SKY AGAIN anchors to the true foot. The page reads as your duels asleep, not as a dead end.'}
 ];
@@ -675,32 +745,32 @@ function setState(i){
 
 /* ============ the plaque ladder — 1→4 standing duels, proposed ============ */
 function ladderPhone(n){
-  let s=crown({chip:'✦ Wispfall · 1024', heroScale:1});
-  s+='<div class="ph-band" style="top:37.6%">— STANDING DUELS —<span class="pips">'+pips(Math.min(n,3))+'</span></div>';
+  let s=crown({chip:'✦ Wispfall · 1024', heroScale:1, nocap:1});
+  s+='<div class="ph-band" style="top:37%">— STANDING DUELS —<span class="pips">'+pips(Math.min(n,3))+'</span></div>';
   const P=[
     {cls:'move', name:'Quiet Owl', status:'✦ your move', right:'›&nbsp; ✕'},
     {name:'Umbral Raven', status:'Umbral Raven weaves…', right:'›&nbsp; ✕'},
     {name:'Silver Weaver', status:'away from the sky — your summons waits', right:'✶&nbsp; ✕'},
     {name:'Ember Warden', status:'the duel is decided', right:'›'}
   ];
-  for(let i=0;i<n;i++) s+=plaque(Object.assign({top:38.875+i*7.25}, P[i]));
+  for(let i=0;i<n;i++) s+=plaque(Object.assign({top:40.6+i*7.25}, P[i]));
   const R=[
-    {dot:GREEN, glow:1, name:'Moonlit Hare', sub:'<span class="rr">✦ 1024</span> · online', pill:'DUEL', pillCls:'g'},
-    {dot:'#c9b676', name:'Dawn Scribe', sub:'<span class="rr">✦ 987</span> · last night', pill:'AGAIN', pillCls:'d'},
-    {dot:GOLD, glow:1, name:'Astral Raven', sub:'<span class="rr">✦ 1042</span>', pill:'DUEL', pillCls:'g'}
+    {dot:GREEN, glow:1, name:'Moonlit Hare', sub:'online', pill:'DUEL', pillCls:'g'},
+    {dot:'#c9b676', name:'Dawn Scribe', sub:'last night', pill:'AGAIN', pillCls:'d'},
+    {dot:GOLD, glow:1, name:'Astral Raven', pill:'DUEL', pillCls:'g'}
   ];
   if(n<4){
-    const headPct=[48.6,55.9,63.1][n-1], rows=3-(n-1);
-    s+='<div class="ph-strip" style="top:'+headPct+'%">— under this sky tonight —</div>';
-    for(let i=0;i<rows;i++) s+=rrow(Object.assign({top:[49.25,56.5,63.75].slice(3-rows)[i]}, R[i]));
+    const headPct=[47.85,55.15,62.35][n-1], rows=3-(n-1);
+    s+='<div class="ph-strip" style="top:'+headPct+'%;font-size:9.5px">under this sky tonight</div>';
+    for(let i=0;i<rows;i++) s+=rrow(Object.assign({top:[51.5,58.75,66].slice(3-rows)[i]}, R[i]));
   }else{
-    s+='<div class="chips-row" style="top:69.4%">'
+    s+='<div class="chips-row" style="top:69.9%">'
       +vchip({notag:1, dot:GREEN, glow:1, name:'Moonlit Hare'})
       +vchip({notag:1, dot:'#c9b676', name:'Dawn Scribe'})
       +'<div class="vchip all">› ALL MAGES</div>'
       +'</div>';
   }
-  return s+foot(1);
+  return s+footAfter();
 }
 (function(){
   const row=document.getElementById('ladrow');
@@ -751,32 +821,34 @@ function ladderPhone(n){
    +frow(50.5,{dot:'#ffd77a',glow:1,name:'Astral Raven',sub:'tonight',btn:'AGAIN',plus:1})
    +frow(58.9,{dot:'#c9b676',name:'Dawn Scribe',sub:'last night',btn:'AGAIN',btnCls:'d',plus:1})
    +frow(67.4,{dot:'#39406b',name:'Keeper of the Nin…',sub:'4 nights ago',btn:'AGAIN',btnCls:'d',plus:1})
-   +'<div class="sh-inv" style="top:79.5%;height:13.9%"><div class="a">✶ INVITE A NEW FRIEND</div><div class="b">a link that brings them into the game</div></div>'
-   +'<div class="mockcap">MOCK OF v0.103.0 · 3 RECENTS · 12pt NAMES · 7pt FLOORS</div>';
+   +'<div class="sh-inv" style="top:79.5%;height:13.9%"><div class="a">✶ INVITE A NEW FRIEND</div><div class="b">a link that brings them into the game</div></div>';
   const A=document.getElementById('sheetA');
   A.innerHTML=
    '<div class="sh-h" style="top:4.4%">— FRIENDS —</div><div class="sh-plus" style="right:26%;top:3.9%">+</div><div class="sh-x" style="top:4.2%">✕</div>'
-   +frow(11.6,{big:1,dot:'#7fe0a0',glow:1,name:'Moonlit Hare',sub:'✦ 1024 · online',btn:'CHALLENGE'})
-   +frow(20.1,{big:1,dot:'#39406b',name:'Quiet Owl',sub:'✦ 1151 · seen 2h ago',btn:'CHALLENGE',btnCls:'d'})
-   +frow(28.6,{big:1,dot:'#39406b',name:'Silver Weaver',sub:'✦ 967 · offline',btn:'CHALLENGE',btnCls:'d'})
-   +'<div class="sh-h" style="top:37.5%">— RECENT RIVALS —</div>'
-   +frow(43.5,{big:1,dot:'#ffd77a',glow:1,name:'Astral Raven',sub:'✦ 1042 · tonight',btn:'AGAIN',plus:1})
-   +frow(52,{big:1,dot:'#c9b676',name:'Dawn Scribe',sub:'✦ 987 · last night',btn:'AGAIN',btnCls:'d',plus:1})
-   +frow(60.5,{big:1,dot:'#39406b',name:'Keeper of the Ninth Star',sub:'✧ 812 · 4 nights ago',btn:'AGAIN',btnCls:'d',plus:1})
-   +frow(69,{big:1,dot:'#ffd77a',glow:1,name:'Ember Warden',sub:'✦ 1210 · 6 nights ago',btn:'AGAIN',plus:1})
-   +'<div class="sh-inv" style="top:82.6%;height:11.8%"><div class="a">✶ INVITE A NEW FRIEND</div><div class="b">a link that brings them into the game</div></div>'
-   +'<div class="mockcap">MOCK · PANEL 448 · PITCH 38 · A FOURTH RECENT · BUCKET PILLS</div>';
+   +frow(11.6,{big:1,dot:'#7fe0a0',glow:1,name:'Moonlit Hare',sub:'online',btn:'CHALLENGE'})
+   +frow(20.4,{big:1,dot:'#39406b',name:'Quiet Owl',sub:'seen 2h ago',btn:'CHALLENGE',btnCls:'d'})
+   +frow(29.2,{big:1,dot:'#39406b',name:'Silver Weaver',sub:'offline',btn:'CHALLENGE',btnCls:'d'})
+   +'<div class="sh-h" style="top:39%">— RECENT RIVALS —</div>'
+   +frow(45.7,{big:1,dot:'#ffd77a',glow:1,name:'Astral Raven',sub:'tonight',btn:'AGAIN',plus:1})
+   +frow(54.5,{big:1,dot:'#c9b676',name:'Dawn Scribe',sub:'last night',btn:'AGAIN',btnCls:'d',plus:1})
+   +frow(63.3,{big:1,dot:'#39406b',name:'Keeper of the Ninth Star',sub:'4 nights ago',btn:'AGAIN',btnCls:'d',plus:1})
+   +frow(72.1,{big:1,dot:'#ffd77a',glow:1,name:'Ember Warden',sub:'6 nights ago',btn:'AGAIN',plus:1})
+   +'<div class="sh-inv" style="top:81%;height:11.8%"><div class="a">✶ INVITE A NEW FRIEND</div></div>';
 })();
 
 /* ============ verdicts ============ */
 const QS=[
  {id:'q1',t:'THE FILLED GROUND',d:'The middle fills by law: plaques first, then full-size replay rows drawn from the people the game already knows, as many as the ground grants (safeB-aware — tall phones seat one more). The pill strip survives only as the fold at four plaques. The void dies by construction in every state.',o:['BUILD','TWEAK — SEE NOTES','HOLD']},
  {id:'q2',t:'THE CIRCLE&rsquo;S SHARE',d:'The fill draws friends online → recent rivals → mages of the circle. On a quiet night that can seat up to three circle mages as full rows — dressed byte-alike the humans, glinting ready, never labeled online. How much ground may the circle hold?',o:['FILL WITH THE CIRCLE ★','AT MOST ONE STRANGER','HUMANS ONLY — THE VOID MAY RETURN']},
- {id:'q3',t:'TEXTURE ON THE ROWS',d:'The sub-line leads with the mage&rsquo;s rating ("✦ 1024 · last night") — ≤5 registry reads per page open, cached, rows dressing in place when numbers land; circle ratings come from the rival engine&rsquo;s own Elo. Optionally, where a near-duel note already holds it, the sub may whisper their last word ("their last word: EMBER").',o:['RATINGS ★','RATINGS + LAST WORD','PRESENCE ONLY']},
+ {id:'q3',t:'TEXTURE ON THE ROWS',d:'<b style="color:var(--gold)">Reshaped on Wyatt&rsquo;s 9/22 notes — the ★ moved.</b> His direction runs against text, so the recommendation is now the quiet lane: the sub carries presence alone — online / the night-clock / nothing for a circle mage — exactly the strip&rsquo;s shipped words, and the mocks above show it. Ratings ("✦ 1024 · last night", ≤5 cached registry reads per open, redress-in-place, circle Elo from the rival engine) stay as the open alternative; if PRESENCE ONLY rules, slice F never fires.',o:['PRESENCE ONLY ★','RATINGS','RATINGS + LAST WORD']},
  {id:'q4',t:'THE HERO FLEX',d:'The Duelists grow when the ground is thin: 1.5× with plaques standing · 1.85× at zero plaques · 2.0× on funnel and offline. The zenith star and the fly-in ride the scale; the sky rig is untouched. Or keep one fixed size and let the crown keep its slack.',o:['FLEX AS SHOWN ★','KEEP ONE SIZE']}
 ];
 const VKEY='ssDuelingGround.v1';
 let V={};try{V=JSON.parse(localStorage.getItem(VKEY)||'{}')}catch(e){}
+/* the revision renamed Q3's options (the ★ moved to PRESENCE ONLY) — carry
+   any verdict already clicked on this device onto its renamed chip */
+(function(){const MIG={'RATINGS ★':'RATINGS','PRESENCE ONLY':'PRESENCE ONLY ★'};
+  if(V.q3&&MIG[V.q3]){V.q3=MIG[V.q3];try{localStorage.setItem(VKEY,JSON.stringify(V))}catch(e){}}})();
 function saveV(){try{localStorage.setItem(VKEY,JSON.stringify(V))}catch(e){}
   let n=0;QS.forEach(function(q){if(V[q.id])n++});
   document.getElementById('ruled').textContent=n;}
@@ -803,7 +875,7 @@ function saveV(){try{localStorage.setItem(VKEY,JSON.stringify(V))}catch(e){}
   saveV();
 })();
 function copyVerdicts(){
-  let t='THE DUELING GROUND, FILLED — verdicts — 2026-09-22\n';
+  let t='THE DUELING GROUND, FILLED (revised on Wyatt’s notes) — verdicts — 2026-09-22\n';
   QS.forEach(function(q,i){
     const div=document.createElement('div');div.innerHTML=q.t;
     t+=(i+1)+') '+div.textContent+': '+(V[q.id]||'—')+(V['note_'+q.id]?(' — '+V['note_'+q.id]):'')+'\n';
